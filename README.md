@@ -1,13 +1,13 @@
 # Chuegelibahn
-A VR Chügelibahn Simulator and Editor.
+A VR Chügelibahn Simulator and Editor for _3D User Interfaces & Experience Design_
 
 
-
-## Grobkonzept UIED
+## Grobkonzept
 
 ### Idee
 
 Wir wollen für VR oder AR (noch nicht definitiv entschieden) einen einfachen Kugelbahn Simulator erstellen. Der Kugelbahn Simulator soll einen eigenen Editor haben, in dem verschiden Elemente zu einer Kugelbahn zusammengebaut werden können. Diese kann dann getestet werden. Der Hauptfokus liegt auf dem Editor, und auf dessen Intuitivität. 
+
 
 ### UI Challenges
 
@@ -28,8 +28,8 @@ Die Bauteile können gestreckt, vergrössert, verkleinert werden.
 - 3D Objekte werden von uns erstellt, oder stammen aus Open Source Libraries.
 
 
-
 ### Weitere Überlegungen
 
-Objekte, die weder gehalten noch fixiert werden, bewegen sich nach physikalischen Gesetzen.
+- Objekte, die weder gehalten noch fixiert werden, bewegen sich nach physikalischen Gesetzen.
+- Evtl kann die Bahn später (am Computer) mit einer Kamera in einer durchsichtigen Kugel selbst "erfahren" werden
 
