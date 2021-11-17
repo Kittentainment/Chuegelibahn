@@ -44,12 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1232acb269571415997e57689ec31e7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <SnappingRadius>k__BackingField: 0.5
+  <SnappingRadius>k__BackingField: 0.05
   snappingLayer: 0
   normalDirection: {x: 1, y: 0, z: 0}
   showDebugSettings: 1
   gizmosSnappingVisibility: 0.2
-  objectRadius: 0.1
+  objectRadius: 0.02
 --- !u!135 &6259688347675000233
 SphereCollider:
   m_ObjectHideFlags: 0
