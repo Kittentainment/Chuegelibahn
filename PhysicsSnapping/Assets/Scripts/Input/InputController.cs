@@ -10,7 +10,7 @@ namespace Input
     {
         private MoveObjectController _moveObjectController;
 
-        private Vector2 _movementInput = Vector2.zero;
+        private Vector3 _movementInput = Vector3.zero;
 
         private void Awake()
         {
@@ -19,15 +19,16 @@ namespace Input
 
         private void FixedUpdate()
         {
-            if (!_movementInput.Equals(Vector2.zero))
+            if (!_movementInput.Equals(Vector3.zero))
             {
-                _moveObjectController.MoveSelection(new Vector3(_movementInput.x, 0, _movementInput.y),
+                _moveObjectController.MoveSelection(new Vector3(_movementInput.x, _movementInput.y, 0),
                     Time.fixedDeltaTime);
             }
         }
 
         public void OnClick(InputAction.CallbackContext context)
         {
+            Debug.Log("InputController::OnCLick");
             if (!context.performed) return;
 
             if (Camera.main is null) return;
@@ -37,6 +38,10 @@ namespace Input
             if (Physics.Raycast(ray, out var hit))
             {
                 var go = hit.transform.gameObject;
+                if (go != null)
+                {
+                    Debug.Log($"Hit a go: {go.name}");
+                }
                 var snappingObj = go.GetComponentInParent<SnappingObjWrapper>();
                 if (snappingObj != null)
                 {

@@ -13,6 +13,7 @@ namespace Moving
 
         public void SelectAnObject([NotNull] SnappingObjWrapper objWrapper)
         {
+            Debug.Log("MoveObjectController::SelectAnObject");
             DeselectObject();
             _selection = objWrapper ? objWrapper : throw new ArgumentNullException(nameof(objWrapper));
             _selection.MovementHasStarted();

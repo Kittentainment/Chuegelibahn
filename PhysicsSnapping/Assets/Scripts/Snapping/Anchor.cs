@@ -12,7 +12,7 @@ namespace Snapping
         /// <summary>
         /// It only snaps, if the angle of the other normalDirection to this Anchor's normalDirection is [180-SnappingAngle] (as normals snap to opposite direction)
         /// </summary>
-        public static float SnappingAngle { get; set; } = 120;
+        public static float SnappingAngle { get; set; } = 180;
 
         #endregion
 
