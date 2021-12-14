@@ -277,7 +277,6 @@ GameObject:
   - component: {fileID: 6846140095257138564}
   - component: {fileID: 2429062846964700551}
   - component: {fileID: 2282656135897847069}
-  - component: {fileID: 5134174506745427448}
   m_Layer: 0
   m_Name: Outer Edge
   m_TagString: Untagged
@@ -349,19 +348,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5134174506745427448
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5262947360464236511}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.0005094424, y: 0.001, z: 0}
-  m_Center: {x: -0.00975, y: 0.0005, z: 0.0035}
 --- !u!1 &5440675260986837156
 GameObject:
   m_ObjectHideFlags: 0
