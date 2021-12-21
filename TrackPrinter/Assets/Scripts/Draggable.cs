@@ -3,14 +3,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Debug = System.Diagnostics.Debug;
 
 public class Draggable : MonoBehaviour
 {
-    private const float RetractingSpeed = 0.1f;
+    private const float RetractingSpeed = 1f;
 
-    // ReSharper disable once InconsistentNaming
-    [SerializeField] private TrackPrinter _correspondingTrackPrinter;
-    public TrackPrinter correspondingTrackPrinter => _correspondingTrackPrinter;
+    public TrackPrinter? trackPrinter { get; set; }
+
+    public TrackType selectedType { get; set; } = TrackType.Straight;
 
     public TrackBuilder? currentTrackBuilder { get; private set; }
 
@@ -45,7 +46,8 @@ public class Draggable : MonoBehaviour
     /// </summary>
     private void Retract()
     {
-        var goalPosition = _correspondingTrackPrinter.transform.position;
+        Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
+        var goalPosition = trackPrinter!.transform.position;
         var currMoveDistance = Time.deltaTime * RetractingSpeed;
         var totalDistance = goalPosition - transform.position;
         if (currMoveDistance > totalDistance.magnitude)
@@ -57,7 +59,7 @@ public class Draggable : MonoBehaviour
         {
             var transform = this.transform;
             transform.position += totalDistance.normalized * currMoveDistance;
-            currentTrackBuilder?.OnDrag(_correspondingTrackPrinter.transform, transform);
+            currentTrackBuilder?.OnDrag(trackPrinter.transform, transform);
         }
     }
 
@@ -70,9 +72,15 @@ public class Draggable : MonoBehaviour
 
     public void StartGrab()
     {
-        if (isGrabbed) throw new InvalidOperationException("Draggable is already Grabbed!");
+        Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
+        Debug.Assert(!isGrabbed, "Draggable is already Grabbed!");
 
-        currentTrackBuilder = new TrackBuilder(correspondingTrackPrinter.selectedType, correspondingTrackPrinter.transform.position, this.transform.position, this);
+        currentTrackBuilder?.DestroyYourself();
+        if (currentTrackBuilder == null) // If we were retracting before and still have one, we can just keep it.
+        {
+            currentTrackBuilder = new TrackBuilder(trackPrinter!.selectedType, trackPrinter.transform.position, this.transform.position, this);
+        }
+
         currentState = DraggableState.Grabbed;
     }
 
@@ -88,6 +96,8 @@ public class Draggable : MonoBehaviour
 
     public void DragToLocation(Vector3 newLocation)
     {
+        Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
+
         transform.position = newLocation;
         if (isGrabbed == false || currentTrackBuilder == null)
         {
@@ -95,7 +105,7 @@ public class Draggable : MonoBehaviour
         }
         else
         {
-            currentTrackBuilder.OnDrag(correspondingTrackPrinter.transform, this.transform);
+            currentTrackBuilder.OnDrag(trackPrinter!.transform, this.transform);
         }
     }
 

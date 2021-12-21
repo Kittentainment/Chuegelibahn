@@ -47,7 +47,7 @@ public class TrackBuilder
         _lastNumberOfElements = numberOfNeededElements;
         UpdatePositions(trackPrinterPos, draggablePos);
 
-        if (numberOfNeededElements > 20 && _draggable.isGrabbed)
+        if (numberOfNeededElements > 30 && _draggable.isGrabbed)
         {
             _draggable.LetGo(); // DEBUG only for testing
         }
