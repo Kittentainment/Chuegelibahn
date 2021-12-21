@@ -35,12 +35,12 @@ public class TrackBuilder
         var distance = Vector3.Dot(drawLine, outputDirection);
         var pieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
         var numberOfNeededElements = Mathf.RoundToInt(distance / pieceLength);
-        Debug.Log("numberOfNeededElements = " + numberOfNeededElements);
 
-        if (numberOfNeededElements != lastNumberOfElements)
-        {
+        // if (numberOfNeededElements != lastNumberOfElements)
+        // {
+            Debug.Log("numberOfNeededElements = " + numberOfNeededElements);
             UpdateTrackPreview(numberOfNeededElements, outputDirection, trackPrinterPos);
-        }
+        // }
 
         lastNumberOfElements = numberOfNeededElements;
         UpdatePositions(trackPrinterPos, draggablePos);
@@ -48,9 +48,9 @@ public class TrackBuilder
 
     private void UpdateTrackPreview(int numberOfElements, Vector3 outputDirection, Vector3 startPos)
     {
-        var rotation = Quaternion.Euler(outputDirection);
-        var rotationWithDefault =
-            Quaternion.Euler(outputDirection + TrackPrefabManager.GetDefaultRotationOfPiece(type));
+        var rotation = Quaternion.FromToRotation(Vector3.forward, outputDirection); //Quaternion.Euler(outputDirection);
+        Debug.Log("outputDirection = " + outputDirection);
+        Debug.Log("rotation = " + rotation);
         DeleteTrackPreview();
         _track = new GameObject();
         _track.transform.SetPositionAndRotation(startPos, rotation);
@@ -59,7 +59,8 @@ public class TrackBuilder
         for (var i = 0; i < numberOfElements; i++)
         {
             var trackPiece = GameObject.Instantiate(trackPrefabManager.StraightPiece, _track.transform);
-            trackPiece.transform.SetPositionAndRotation(startPos + i * singlePieceLength * outputDirection, rotationWithDefault);
+            trackPiece.name = $"New TrackPiece {i}";
+            trackPiece.transform.SetPositionAndRotation(startPos + i * singlePieceLength * outputDirection, rotation);
         }
     }
 
