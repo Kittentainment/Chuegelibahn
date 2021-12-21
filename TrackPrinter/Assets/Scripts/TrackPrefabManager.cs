@@ -22,7 +22,12 @@ public class TrackPrefabManager : MonoBehaviour
         instance = this;
     }
 
-
+    /// <summary>
+    /// The distance from the previous track piece to the next one if put together.
+    /// </summary>
+    /// <param name="type">Specify which TrackType you want the length of.</param>
+    /// <returns>The distance from the previous track piece to the next one if put together.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">When type is out of range of the existing enums.</exception>
     public static float GetLengthOfTrackPiece(TrackType type)
     {
         return type switch
@@ -35,10 +40,18 @@ public class TrackPrefabManager : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
-    
-    public static Vector3 GetDefaultRotationOfPiece(TrackType type)
+
+    public static Vector3 GetVectorFromPivotToCenterBottom(TrackType type)
     {
-        return new Vector3(-90, 0, 0);
+        return type switch
+        {
+            TrackType.Straight => Vector3.right * 0.05f,
+            TrackType.Left => Vector3.left * 0.05f,
+            TrackType.Right => Vector3.left * 0.05f,
+            TrackType.Up => Vector3.left * 0.05f,
+            TrackType.Down => Vector3.left * 0.05f,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
     }
     
 }
