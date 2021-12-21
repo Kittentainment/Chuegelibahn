@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7096176117530561550}
   m_Layer: 0
-  m_Name: Straight_Track_v1
+  m_Name: Straight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
