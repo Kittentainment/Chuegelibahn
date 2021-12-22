@@ -88,14 +88,19 @@ namespace Snapping
         /// <summary>
         /// Update the list of all anchors in child game objects and optionally move them to a separate child game object, for the snapping logic to work.
         /// </summary>
-        public void UpdateAnchors(bool moveToChildObj = false)
+        public void UpdateAnchors(bool collectAnchors = false)
         {
             _anchors.AddRange(gameObject.GetComponentsInChildren<Anchor>());
-            if (moveToChildObj)
+            if (collectAnchors)
             {
-                var anchorCollection = new GameObject("AutomaticAnchorCollection");
-                anchorCollection.transform.parent = this.transform;
+                // Collect all anchors in new collection parent object
+                var anchorCollection = new GameObject("AutomaticAnchorCollection").AddComponent<AnchorCollection>();
                 _anchors.ForEach(anchor => anchor.gameObject.transform.parent = anchorCollection.transform);
+                // Destroy previous anchor collections
+                foreach (var oldAnchorCollections in GetComponentsInChildren<AnchorCollection>())
+                    Destroy(oldAnchorCollections);
+                // Add new collection to this wrapper
+                anchorCollection.transform.parent = this.transform;
             }
         }
 

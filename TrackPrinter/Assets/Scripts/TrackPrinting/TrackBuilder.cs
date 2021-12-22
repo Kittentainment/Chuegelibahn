@@ -124,7 +124,7 @@ public class TrackBuilder
         var wrapperGO = new GameObject($"Track Piece {_currTrackID++}");
         var wrapper = wrapperGO.AddComponent<SnappingObjWrapper>();
         track.transform.parent = wrapper.objToSnap.transform;
-        wrapper.UpdateAnchors(moveToChildObj: true);
+        wrapper.UpdateAnchors(collectAnchors: true);
         return wrapperGO;
     }
 
