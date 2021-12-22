@@ -43,5 +43,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c84e74d2b835488caa2356e31e83916, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseObjectWrapperPrefab: {fileID: 7089323166477170761, guid: 7f160d22e93cf4f999fb007a347935d1, type: 3}
   straightPiece: {fileID: 3828201489064857031, guid: 546cd7b721d6946b5b4ce97dc1ee4e6a, type: 3}
+  straightPieceSnappingFirst: {fileID: 9147276914902947558, guid: 2366d347d5aa34c3c8c2fe3d91cc8fc7, type: 3}
+  straightPieceSnappingLast: {fileID: 2246857444399460299, guid: 225797142216d4d7fb8ad4d08a78d414, type: 3}
   curvePiece: {fileID: 3928094143310531420, guid: 2361137b551cb4279bda47f12668530a, type: 3}

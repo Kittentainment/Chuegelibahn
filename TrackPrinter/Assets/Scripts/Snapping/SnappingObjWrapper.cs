@@ -20,7 +20,7 @@ namespace Snapping
 
         private readonly List<Anchor> _anchors = new List<Anchor>();
 
-        private ObjToSnap _objToSnap;
+        public ObjToSnap objToSnap { get; private set; }
 
         private bool _isBeingMoved = false;
         /// <summary>
@@ -58,13 +58,19 @@ namespace Snapping
 
         private void Awake()
         {
-            _objToSnap ??= GetComponentInChildren<ObjToSnap>();
-            _anchors.AddRange(gameObject.GetComponentsInChildren<Anchor>());
-            if (!_objToSnap.transform.localPosition.Equals(Vector3.zero))
+            objToSnap ??= GetComponentInChildren<ObjToSnap>();
+            if (objToSnap == null)
+            { // We probably created this wrapper manually in code. Add a basic objToSnap. IMPORTANT: If you did this, don't forget to UpdateAnchors() again once you added them.
+                objToSnap ??= new GameObject().AddComponent<ObjToSnap>();
+                objToSnap.transform.parent = this.transform;
+            }
+
+            UpdateAnchors();
+            if (!objToSnap.transform.localPosition.Equals(Vector3.zero))
             {
                 Debug.LogWarning(
                     $"The ObjToSnap should be at (0, 0, 0) instead of {transform.localPosition} (relative to it's parent object)");
-                ResetTransformLocally(_objToSnap.transform);
+                ResetTransformLocally(objToSnap.transform);
             }
 
             Debug.Log($"Anchors Found: {_anchors.Count}");
@@ -77,6 +83,14 @@ namespace Snapping
             {
                 UpdateCurrentSnapping();
             }
+        }
+        
+        /// <summary>
+        /// Update the list of all anchors in child game objects.
+        /// </summary>
+        public void UpdateAnchors()
+        {
+            _anchors.AddRange(gameObject.GetComponentsInChildren<Anchor>());
         }
 
 
@@ -109,7 +123,7 @@ namespace Snapping
                 if (UseSnappingPreviews)
                     CurrentSnappingPreviewGO = null;
                 else
-                    ResetTransformLocally(_objToSnap.transform);
+                    ResetTransformLocally(objToSnap.transform);
 
                 ApplySnappingToTransform(transform, CurrentSnapping);
             }
@@ -159,7 +173,7 @@ namespace Snapping
                 throw new NullReferenceException(
                     "Please create the snapping preview object before calling SnapToCurrentSnappingPosition()");
 
-            var transformToSnap = UseSnappingPreviews ? CurrentSnappingPreviewGO.transform : _objToSnap.transform;
+            var transformToSnap = UseSnappingPreviews ? CurrentSnappingPreviewGO.transform : objToSnap.transform;
             ResetTransformLocally(transformToSnap);
             // _objToSnap.transform.Translate(CurrentSnapping.GetMovementVector());
             ApplySnappingToTransform(transformToSnap, CurrentSnapping);
@@ -183,7 +197,7 @@ namespace Snapping
                 if (UseSnappingPreviews)
                     CurrentSnappingPreviewGO = null;
                 else
-                    ResetTransformLocally(_objToSnap.transform);
+                    ResetTransformLocally(objToSnap.transform);
 
                 return;
             }
@@ -195,7 +209,7 @@ namespace Snapping
                 // It's a new snapping! Create a preview object if we use previews.
                 if (UseSnappingPreviews)
                 {
-                    CurrentSnappingPreviewGO = _objToSnap.CreateSnappingPreviewObject(this.transform);
+                    CurrentSnappingPreviewGO = objToSnap.CreateSnappingPreviewObject(this.transform);
                 }
             }
 

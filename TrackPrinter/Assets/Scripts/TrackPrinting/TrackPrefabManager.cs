@@ -1,11 +1,16 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Snapping;
+using TrackPrinting;
 using UnityEngine;
 
 public class TrackPrefabManager : MonoBehaviour
 {
     public static TrackPrefabManager instance { get; private set; }
+    
+    [SerializeField] private SnappingObjWrapper _baseObjectWrapperPrefab;
+    public SnappingObjWrapper baseObjectWrapperPrefab => _baseObjectWrapperPrefab;
 
     [SerializeField] private TrackPiece straightPiece;
     public TrackPiece StraightPiece => straightPiece;
@@ -19,6 +24,7 @@ public class TrackPrefabManager : MonoBehaviour
     
     [SerializeField] private TrackPiece curvePiece;
     public TrackPiece CurvePiece => curvePiece;
+
 
 
     private void Awake()
@@ -59,6 +65,19 @@ public class TrackPrefabManager : MonoBehaviour
             TrackType.Up => Vector3.left * 0.05f,
             TrackType.Down => Vector3.left * 0.05f,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+
+    public TrackPiecePrefabs GetTrackPrefabsForType(TrackType type)
+    {
+        return type switch
+        {
+            TrackType.Straight => new TrackPiecePrefabs(type, StraightPieceSnappingFirst, StraightPieceSnappingLast, StraightPiece),
+            TrackType.Left => throw new ArgumentOutOfRangeException(nameof(type)),
+            TrackType.Right => throw new ArgumentOutOfRangeException(nameof(type)),
+            TrackType.Up => throw new ArgumentOutOfRangeException(nameof(type)),
+            TrackType.Down => throw new ArgumentOutOfRangeException(nameof(type)),
+            _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }
     

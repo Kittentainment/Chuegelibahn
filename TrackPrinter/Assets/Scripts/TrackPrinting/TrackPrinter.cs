@@ -22,7 +22,7 @@ public class TrackPrinter : MonoBehaviour
 
     public void PrintCurrentTrack()
     {
-        
+        draggable.PrintCurrentTrack();
     }
     
 }
