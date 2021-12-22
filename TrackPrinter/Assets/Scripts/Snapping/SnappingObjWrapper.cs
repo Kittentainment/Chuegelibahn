@@ -61,7 +61,7 @@ namespace Snapping
             objToSnap ??= GetComponentInChildren<ObjToSnap>();
             if (objToSnap == null)
             { // We probably created this wrapper manually in code. Add a basic objToSnap. IMPORTANT: If you did this, don't forget to UpdateAnchors() again once you added them.
-                objToSnap ??= new GameObject().AddComponent<ObjToSnap>();
+                objToSnap ??= new GameObject("ObjToSnap").AddComponent<ObjToSnap>();
                 objToSnap.transform.parent = this.transform;
             }
 
@@ -86,11 +86,17 @@ namespace Snapping
         }
         
         /// <summary>
-        /// Update the list of all anchors in child game objects.
+        /// Update the list of all anchors in child game objects and optionally move them to a separate child game object, for the snapping logic to work.
         /// </summary>
-        public void UpdateAnchors()
+        public void UpdateAnchors(bool moveToChildObj = false)
         {
             _anchors.AddRange(gameObject.GetComponentsInChildren<Anchor>());
+            if (moveToChildObj)
+            {
+                var anchorCollection = new GameObject("AutomaticAnchorCollection");
+                anchorCollection.transform.parent = this.transform;
+                _anchors.ForEach(anchor => anchor.gameObject.transform.parent = anchorCollection.transform);
+            }
         }
 
 

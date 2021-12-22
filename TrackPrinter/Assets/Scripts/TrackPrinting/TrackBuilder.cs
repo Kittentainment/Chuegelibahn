@@ -91,6 +91,10 @@ public class TrackBuilder
         return wrapper;
     }
 
+    /// <summary>
+    /// Replaces the TrackPieces at the ends with TrackPieces with an Anchor.
+    /// </summary>
+    /// <param name="track">The segment to work on.</param>
     private void AddSnappingPoints(TrackSegment track)
     {
         var trackPiecePrefabs = prefabManager.GetTrackPrefabsForType(track.trackPieces[0].type);
@@ -120,7 +124,7 @@ public class TrackBuilder
         var wrapperGO = new GameObject($"Track Piece {_currTrackID++}");
         var wrapper = wrapperGO.AddComponent<SnappingObjWrapper>();
         track.transform.parent = wrapper.objToSnap.transform;
-        wrapper.UpdateAnchors();
+        wrapper.UpdateAnchors(moveToChildObj: true);
         return wrapperGO;
     }
 
