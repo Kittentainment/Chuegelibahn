@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class TrackBuilder
@@ -9,7 +10,7 @@ public class TrackBuilder
 
     private int _lastNumberOfElements = 0;
 
-    private GameObject _track;
+    [CanBeNull] private GameObject _track;
 
     public TrackBuilder(TrackType type, Vector3 trackPrinterPos, Vector3 draggablePos, Draggable draggable)
     {
@@ -25,8 +26,8 @@ public class TrackBuilder
         lastTrackPrinterPos = trackPrinterPos;
         lastDraggablePos = draggablePos;
     }
-
-
+    
+    
 
     public void OnDrag(Transform trackPrinter, Transform draggable)
     {
@@ -67,6 +68,24 @@ public class TrackBuilder
             trackPiece.name = $"New TrackPiece {i}";
             trackPiece.transform.SetPositionAndRotation(_track.transform.position + i * singlePieceLength * outputDirection, rotation);
         }
+    }
+
+    private GameObject SnapOffCurrentTrack()
+    {
+        var currentTrack = _track;
+        _track = null;
+        FinishTrackPiece();
+        return currentTrack;
+    }
+
+    private void FinishTrackPiece()
+    {
+        AddSnappingPoints();
+    }
+
+    private void AddSnappingPoints()
+    {
+        
     }
 
     private void DeleteTrackPreview()
