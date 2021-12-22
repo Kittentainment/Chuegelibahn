@@ -95,7 +95,8 @@ namespace Snapping
             {
                 // Collect all anchors in new collection parent object
                 var anchorCollection = new GameObject("AutomaticAnchorCollection").AddComponent<AnchorCollection>();
-                _anchors.ForEach(anchor => anchor.gameObject.transform.parent = anchorCollection.transform);
+                anchorCollection.AddAnchorsAsChildren(_anchors);
+                
                 // Destroy previous anchor collections
                 foreach (var oldAnchorCollections in GetComponentsInChildren<AnchorCollection>())
                     Destroy(oldAnchorCollections);
