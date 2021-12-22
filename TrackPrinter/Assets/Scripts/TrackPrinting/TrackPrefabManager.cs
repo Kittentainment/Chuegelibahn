@@ -9,6 +9,14 @@ public class TrackPrefabManager : MonoBehaviour
 
     [SerializeField] private TrackPiece straightPiece;
     public TrackPiece StraightPiece => straightPiece;
+    
+    [SerializeField] private TrackPiece straightPieceSnappingFirst;
+    public TrackPiece StraightPieceSnappingFirst => straightPieceSnappingFirst;
+    
+    [SerializeField] private TrackPiece straightPieceSnappingLast;
+    public TrackPiece StraightPieceSnappingLast => straightPieceSnappingLast;
+
+    
     [SerializeField] private TrackPiece curvePiece;
     public TrackPiece CurvePiece => curvePiece;
 
