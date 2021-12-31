@@ -9,15 +9,15 @@ public class Draggable : MonoBehaviour
 {
     private const float RetractingSpeed = 1f;
 
-    public TrackPrinter? trackPrinter { get; set; }
-
-    public TrackType selectedType { get; set; } = TrackType.Straight;
+    public TrackPrinter?  trackPrinter { get; set; }
+    
+    public TrackType selectedType => trackPrinter!.selectedType;
 
     public TrackBuilder? currentTrackBuilder { get; private set; }
 
     public DraggableState currentState { get; private set; }
 
-    public enum DraggableState { PulledIn, Grabbed, Retracting }
+    public enum DraggableState { Waiting, Grabbed, Retracting }
 
     public bool isGrabbed => currentState == DraggableState.Grabbed;
     
@@ -26,7 +26,7 @@ public class Draggable : MonoBehaviour
     {
         switch (currentState)
         {
-            case DraggableState.PulledIn:
+            case DraggableState.Waiting:
                 StartGrab(); // TODO only for DEBUG, until we have input system and VR.
                 break;
             case DraggableState.Grabbed:
@@ -65,8 +65,9 @@ public class Draggable : MonoBehaviour
 
     private void SwitchFromRetractingToPulledIn()
     {
-        currentState = DraggableState.PulledIn;
+        currentState = DraggableState.Waiting;
         currentTrackBuilder?.DestroyYourself();
+        currentTrackBuilder = null;
     }
 
 
@@ -75,7 +76,6 @@ public class Draggable : MonoBehaviour
         Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
         Debug.Assert(!isGrabbed, "Draggable is already Grabbed!");
 
-        currentTrackBuilder?.DestroyYourself();
         if (currentTrackBuilder == null) // If we were retracting before and still have one, we can just keep it.
         {
             currentTrackBuilder = new TrackBuilder(trackPrinter!.selectedType, trackPrinter.transform.position, this.transform.position, this);
@@ -96,6 +96,7 @@ public class Draggable : MonoBehaviour
 
     public void DragToLocation(Vector3 newLocation)
     {
+        // TODO Add max distance (maybe or just max elements in the TrackBuilder)
         Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
 
         transform.position = newLocation;
@@ -109,4 +110,21 @@ public class Draggable : MonoBehaviour
         }
     }
 
+    public void PrintCurrentTrack()
+    {
+        Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
+        
+        currentTrackBuilder!.PrintCurrentTrack();
+
+        ResetPosition();
+        currentState = DraggableState.Waiting;
+        
+        currentTrackBuilder!.DestroyYourself();
+        currentTrackBuilder = null;
+    }
+
+    private void ResetPosition()
+    {
+        transform.localPosition = Vector3.zero;
+    }
 }

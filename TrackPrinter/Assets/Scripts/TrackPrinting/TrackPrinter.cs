@@ -17,4 +17,12 @@ public class TrackPrinter : MonoBehaviour
         draggable.transform.position = transform.position;
         draggable.trackPrinter = this;
     }
+
+
+
+    public void PrintCurrentTrack()
+    {
+        draggable.PrintCurrentTrack();
+    }
+    
 }
