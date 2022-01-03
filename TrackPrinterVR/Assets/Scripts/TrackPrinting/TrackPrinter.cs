@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Input;
 using UnityEngine;
 
 public class TrackPrinter : MonoBehaviour
@@ -33,15 +34,19 @@ public class TrackPrinter : MonoBehaviour
     {
         Debug.Log("TrackPrinter -- OnActivate");
         PrintCurrentTrack();
-        // TODO: also let go of draggable immediately
-        // GetComponent<XR>()
-        // http://snapandplug.com/xr-input-toolkit-2020-faq/#FAQ:-Can-I-force-a-hand/controller-to-drop-held-items?
     }
 
 
     public void PrintCurrentTrack()
     {
         draggable.PrintCurrentTrack();
+        draggable.LetGo();
+        InputController.Instance.RightHand.allowSelect = false;
+        InputController.Instance.RightHand.allowSelect = true;
+        draggable.XRGrabInteractable.enabled = false;
+        draggable.XRGrabInteractable.enabled = true;
+        // TODO: Check how to let go correctly
+        // http://snapandplug.com/xr-input-toolkit-2020-faq/#FAQ:-Can-I-force-a-hand/controller-to-drop-held-items?
     }
     
 }

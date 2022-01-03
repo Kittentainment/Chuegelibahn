@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fd902be3-860d-4d59-b500-3418abe650df" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TrackPrinterVR/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TrackPrinterVR/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Input/InputController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Input/InputController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/TrackPrinting/Draggable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TrackPrinting/Draggable.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/TrackPrinting/TrackPrinter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TrackPrinting/TrackPrinter.cs" afterDir="false" />
     </list>
@@ -15,6 +16,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@2.0.0-pre.6/Runtime/Interaction/Interactables/XRGrabInteractable.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.xr.interaction.toolkit@2.0.0-pre.6/Runtime/Interaction/Interactors/XRRayInteractor.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f039202799bf40c48a1e0c61b1d21d7d13be00/c2/e0bb0ae7/Debug.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -64,7 +67,8 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1641211138824</updated>
-      <workItem from="1641211142243" duration="2283000" />
+      <workItem from="1641211142243" duration="2313000" />
+      <workItem from="1641239251237" duration="1891000" />
     </task>
     <servers />
   </component>

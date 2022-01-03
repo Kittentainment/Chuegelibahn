@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 using DebugAssert = System.Diagnostics.Debug;
 
 public class Draggable : MonoBehaviour
@@ -10,6 +11,8 @@ public class Draggable : MonoBehaviour
     private const float RetractingSpeed = 1f;
 
     public TrackPrinter?  trackPrinter { get; set; }
+    
+    public XRGrabInteractable XRGrabInteractable { get; private set; }
     
     public TrackType selectedType => trackPrinter!.selectedType;
 
@@ -20,6 +23,13 @@ public class Draggable : MonoBehaviour
     public enum DraggableState { Waiting, Grabbed, Retracting }
 
     public bool isGrabbed => currentState == DraggableState.Grabbed;
+
+    private void Awake()
+    {
+        XRGrabInteractable = GetComponent<XRGrabInteractable>();
+        if (XRGrabInteractable == null)
+            throw new MissingComponentException("No XRGrabInteractable on Draggable");
+    }
 
     private void Start()
     {

@@ -3,17 +3,26 @@ using Moving;
 using Snapping;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Input
 {
     public class InputController : MonoBehaviour
     {
+        
+        public static InputController Instance { get; private set; }
+        
         private MoveObjectController _moveObjectController;
 
         private Vector3 _movementInput = Vector3.zero;
 
+        [SerializeField] private XRRayInteractor xrRayInteractor;
+        public XRRayInteractor RightHand => xrRayInteractor;
+
         private void Awake()
         {
+            if (Instance != null) Debug.LogError("Only One InputController allowed!");
+            Instance = this;
             _moveObjectController = FindObjectOfType<MoveObjectController>();
         }
 

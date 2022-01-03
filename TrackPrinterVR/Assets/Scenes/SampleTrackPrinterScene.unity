@@ -903,6 +903,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7070732487597124690, guid: d24e12c31fb2348f4b202ce344e0fb1a, type: 3}
+      propertyPath: xrRayInteractor
+      value: 
+      objectReference: {fileID: 1983215130}
     - target: {fileID: 7070732487597124691, guid: d24e12c31fb2348f4b202ce344e0fb1a, type: 3}
       propertyPath: m_Name
       value: InputController
