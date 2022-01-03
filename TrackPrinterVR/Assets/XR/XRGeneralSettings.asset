@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7694361941309604317
+--- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d236b7d11115f2143951f1e14045df39, type: 3}
-  m_Name: Standalone Settings
+  m_Script: {fileID: 11500000, guid: d2dc886499c26824283350fa532d087d, type: 3}
+  m_Name: XRGeneralSettings
   m_EditorClassIdentifier: 
-  m_LoaderManagerInstance: {fileID: -5457073425091067921}
-  m_InitManagerOnStart: 1
---- !u!114 &-5457073425091067921
+  Keys: 01000000
+  Values:
+  - {fileID: 7950318894142683468}
+--- !u!114 &1261788200495732802
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -30,8 +31,8 @@ MonoBehaviour:
   m_AutomaticLoading: 0
   m_AutomaticRunning: 0
   m_Loaders:
-  - {fileID: 11400000, guid: 43297d17a25574a459daa52cd444ea4b, type: 2}
---- !u!114 &11400000
+  - {fileID: 11400000, guid: f73d3f561ebd64b7488ea65b401af60c, type: 2}
+--- !u!114 &7950318894142683468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,9 +41,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2dc886499c26824283350fa532d087d, type: 3}
-  m_Name: XRGeneralSettings
+  m_Script: {fileID: 11500000, guid: d236b7d11115f2143951f1e14045df39, type: 3}
+  m_Name: Standalone Settings
   m_EditorClassIdentifier: 
-  Keys: 01000000
-  Values:
-  - {fileID: -7694361941309604317}
+  m_LoaderManagerInstance: {fileID: 1261788200495732802}
+  m_InitManagerOnStart: 1
