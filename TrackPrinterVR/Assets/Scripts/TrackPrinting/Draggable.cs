@@ -20,14 +20,18 @@ public class Draggable : MonoBehaviour
     public enum DraggableState { Waiting, Grabbed, Retracting }
 
     public bool isGrabbed => currentState == DraggableState.Grabbed;
-    
-    
+
+    private void Start()
+    {
+        GoIntoWaiting();
+    }
+
     private void FixedUpdate()
     {
         switch (currentState)
         {
             case DraggableState.Waiting:
-                StartGrab(); // TODO only for DEBUG, until we have input system and VR.
+                // StartGrab(); // TODO only for DEBUG, until we have input system and VR.
                 break;
             case DraggableState.Grabbed:
                 DragToLocation(transform.position); // TODO only for DEBUG, until we have input system and VR.
@@ -63,11 +67,17 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    private void SwitchFromRetractingToPulledIn()
+    private void GoIntoWaiting()
     {
         currentState = DraggableState.Waiting;
+        transform.parent = trackPrinter!.transform;
+    }
+    
+    private void SwitchFromRetractingToPulledIn()
+    {
         currentTrackBuilder?.DestroyYourself();
         currentTrackBuilder = null;
+        GoIntoWaiting();
     }
 
 
@@ -80,6 +90,8 @@ public class Draggable : MonoBehaviour
         {
             currentTrackBuilder = new TrackBuilder(trackPrinter!.selectedType, trackPrinter.transform.position, this.transform.position, this);
         }
+
+        transform.parent = null;
 
         currentState = DraggableState.Grabbed;
     }
