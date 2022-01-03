@@ -18,6 +18,22 @@ public class TrackPrinter : MonoBehaviour
         draggable.trackPrinter = this;
     }
 
+    public void OnSelected()
+    {
+        Debug.Log("Grabbed TrackPrinter");
+    }
+    
+    public void OnDeselected()
+    {
+        Debug.Log("Let go of TrackPrinter");
+    }
+
+
+    public void OnActivate()
+    {
+        Debug.Log("TrackPrinter -- OnActivate");
+        PrintCurrentTrack();
+    }
 
 
     public void PrintCurrentTrack()

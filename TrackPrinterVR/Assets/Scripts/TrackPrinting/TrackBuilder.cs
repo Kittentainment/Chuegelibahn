@@ -57,7 +57,8 @@ public class TrackBuilder
 
         if (numberOfNeededElements > 30 && _draggable.isGrabbed)
         {
-            _draggable.trackPrinter!.PrintCurrentTrack(); // DEBUG only for testing
+            // _draggable.LetGo(); // DEBUG only for testing
+            // _draggable.trackPrinter!.PrintCurrentTrack(); // DEBUG only for testing
         }
     }
 

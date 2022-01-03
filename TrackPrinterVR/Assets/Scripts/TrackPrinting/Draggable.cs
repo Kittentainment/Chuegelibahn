@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Debug = System.Diagnostics.Debug;
+using DebugAssert = System.Diagnostics.Debug;
 
 public class Draggable : MonoBehaviour
 {
@@ -34,7 +34,7 @@ public class Draggable : MonoBehaviour
                 // StartGrab(); // TODO only for DEBUG, until we have input system and VR.
                 break;
             case DraggableState.Grabbed:
-                DragToLocation(transform.position); // TODO only for DEBUG, until we have input system and VR.
+                DragToLocation(transform.position); // TODO find a better way to continuously check the position while it is grabbed.
                 break;
             case DraggableState.Retracting:
                 Retract();
@@ -44,6 +44,20 @@ public class Draggable : MonoBehaviour
         }
         
     }
+    
+    
+    public void OnSelected()
+    {
+        Debug.Log("Grabbed TrackPrinter");
+        StartGrab();
+    }
+    
+    public void OnDeselected()
+    {
+        Debug.Log("Let go of TrackPrinter");
+        LetGo();
+    }
+    
 
     /// <summary>
     /// Retracts this Draggable back to its TrackPrinter.
@@ -56,11 +70,14 @@ public class Draggable : MonoBehaviour
         var totalDistance = goalPosition - transform.position;
         if (currMoveDistance > totalDistance.magnitude)
         {
+            // Now we have reached the track printer. Wait again.
             transform.position = goalPosition;
-            SwitchFromRetractingToPulledIn();
+            transform.rotation = trackPrinter!.transform.rotation; // TODO rotate slowly back.
+            SwitchFromRetractingWaiting();
         }
         else
         {
+            // Retract back towards the printer. (Pulling in)
             var transform = this.transform;
             transform.position += totalDistance.normalized * currMoveDistance;
             currentTrackBuilder?.OnDrag(trackPrinter.transform, transform);
@@ -73,7 +90,7 @@ public class Draggable : MonoBehaviour
         transform.parent = trackPrinter!.transform;
     }
     
-    private void SwitchFromRetractingToPulledIn()
+    private void SwitchFromRetractingWaiting()
     {
         currentTrackBuilder?.DestroyYourself();
         currentTrackBuilder = null;
@@ -83,8 +100,8 @@ public class Draggable : MonoBehaviour
 
     public void StartGrab()
     {
-        Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
-        Debug.Assert(!isGrabbed, "Draggable is already Grabbed!");
+        DebugAssert.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
+        DebugAssert.Assert(!isGrabbed, "Draggable is already Grabbed!");
 
         if (currentTrackBuilder == null) // If we were retracting before and still have one, we can just keep it.
         {
@@ -109,7 +126,7 @@ public class Draggable : MonoBehaviour
     public void DragToLocation(Vector3 newLocation)
     {
         // TODO Add max distance (maybe or just max elements in the TrackBuilder)
-        Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
+        DebugAssert.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
 
         transform.position = newLocation;
         if (isGrabbed == false || currentTrackBuilder == null)
@@ -124,7 +141,7 @@ public class Draggable : MonoBehaviour
 
     public void PrintCurrentTrack()
     {
-        Debug.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
+        DebugAssert.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
         
         currentTrackBuilder!.PrintCurrentTrack();
 
