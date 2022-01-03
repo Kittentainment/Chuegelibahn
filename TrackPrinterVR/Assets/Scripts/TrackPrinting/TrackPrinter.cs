@@ -33,6 +33,9 @@ public class TrackPrinter : MonoBehaviour
     {
         Debug.Log("TrackPrinter -- OnActivate");
         PrintCurrentTrack();
+        // TODO: also let go of draggable immediately
+        // GetComponent<XR>()
+        // http://snapandplug.com/xr-input-toolkit-2020-faq/#FAQ:-Can-I-force-a-hand/controller-to-drop-held-items?
     }
 
 

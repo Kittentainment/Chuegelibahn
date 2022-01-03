@@ -86,6 +86,8 @@ public class Draggable : MonoBehaviour
 
     private void GoIntoWaiting()
     {
+        transform.position = trackPrinter!.transform.position;
+        transform.rotation = trackPrinter!.transform.rotation;
         currentState = DraggableState.Waiting;
         transform.parent = trackPrinter!.transform;
     }
