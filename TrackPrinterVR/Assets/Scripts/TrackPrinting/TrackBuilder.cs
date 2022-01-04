@@ -88,8 +88,14 @@ public class TrackBuilder
     private GameObject FinishTrackPiece(TrackSegment track)
     {
         AddSnappingPoints(track);
+        AddGrabbingPoints();
         var wrapper = PackSegmentInWrapper(track);
         return wrapper;
+    }
+
+    private void AddGrabbingPoints()
+    {
+        throw new System.NotImplementedException();
     }
 
     /// <summary>
