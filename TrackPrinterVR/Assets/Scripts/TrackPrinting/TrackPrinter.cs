@@ -39,6 +39,11 @@ public class TrackPrinter : MonoBehaviour
 
     public void PrintCurrentTrack()
     {
+        if (!draggable.isGrabbed)
+        {
+            Debug.Log("Printing even tough not grabbed!"); // TODO maybe play a little neh-eh sound.
+            return;
+        }
         draggable.PrintCurrentTrack();
         draggable.LetGo();
         InputController.Instance.RightHand.allowSelect = false;

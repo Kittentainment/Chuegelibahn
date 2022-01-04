@@ -127,7 +127,7 @@ public class Draggable : MonoBehaviour
 
     public void LetGo()
     {
-        if (!isGrabbed) throw new InvalidOperationException("Has to be Grabbed to let go");
+        if (!isGrabbed) Debug.LogWarning("Has to be Grabbed to let go");
         
         // TODO move Draggable to the point in front of the current track, to always retract it at the same speed.
 

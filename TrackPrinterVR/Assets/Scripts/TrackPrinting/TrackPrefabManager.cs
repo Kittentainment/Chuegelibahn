@@ -80,5 +80,20 @@ public class TrackPrefabManager : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }
-    
+
+    /// <summary>
+    /// The rotation of one piece in degree(?).
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public static float GetRotationOfTrackPiece(TrackType type)
+    {
+        return type switch
+        {
+            TrackType.Straight => 0,
+            TrackType.Left => 5f,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };   
+    }
 }

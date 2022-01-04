@@ -1,3 +1,4 @@
+using System;
 using Snapping;
 using TrackPrinting;
 using UnityEngine;
@@ -63,18 +64,35 @@ public class TrackBuilder
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="numberOfElements"></param>
+    /// <param name="outputDirection"></param>
+    /// <param name="startPos">The position of the printer, where we start printing the objects from</param>
     private void UpdateTrackPreview(int numberOfElements, Vector3 outputDirection, Vector3 startPos)
     {
-        var rotation = Quaternion.FromToRotation(Vector3.forward, outputDirection); // The rotation of the TrackPrinter in WorldCoordinates.
+        var trackPrinterRotation = Quaternion.FromToRotation(Vector3.forward, outputDirection); // The rotation of the TrackPrinter in WorldCoordinates.
         DeleteTrackPreview();
         _track = new GameObject("Track Builder Pieces").AddComponent<TrackSegment>();
-        _track.transform.SetPositionAndRotation(startPos + TrackPrefabManager.GetVectorFromPivotToCenterBottom(type), rotation);
+        _track.transform.SetPositionAndRotation(startPos + TrackPrefabManager.GetVectorFromPivotToCenterBottom(type), trackPrinterRotation);
         var singlePieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
+        var singlePieceRotation = TrackPrefabManager.GetRotationOfTrackPiece(type);
         for (var i = 0; i < numberOfElements; i++)
         {
             var trackPiece = GameObject.Instantiate(prefabManager.StraightPiece, _track.transform);
             trackPiece.name = $"New TrackPiece {i}";
-            trackPiece.transform.SetPositionAndRotation(_track.transform.position + i * singlePieceLength * outputDirection, rotation);
+            var position = type switch {
+                TrackType.Straight => _track.transform.position + i * singlePieceLength * outputDirection,
+                TrackType.Left => _track.transform.position,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            var rotation = type switch {
+                TrackType.Straight => trackPrinterRotation,
+                TrackType.Left => Quaternion.FromToRotation(Vector3.forward, outputDirection + new Vector3(0, singlePieceRotation * i, 0)),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            trackPiece.transform.SetPositionAndRotation(position, rotation);
             _track.trackPieces.Add(trackPiece);
         }
     }
