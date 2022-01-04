@@ -1,6 +1,7 @@
 using Snapping;
 using TrackPrinting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class TrackBuilder
 {
@@ -85,17 +86,19 @@ public class TrackBuilder
         return FinishTrackPiece(currentTrack);
     }
 
-    private GameObject FinishTrackPiece(TrackSegment track)
+    private GameObject FinishTrackPiece(TrackSegment segment)
     {
-        AddSnappingPoints(track);
-        AddGrabbingPoints();
-        var wrapper = PackSegmentInWrapper(track);
+        AddSnappingPoints(segment);
+        var wrapper = PackSegmentInWrapper(segment);
+        MakeInteractable(segment, wrapper);
         return wrapper;
     }
 
-    private void AddGrabbingPoints()
+    private void MakeInteractable(TrackSegment trackSegment, GameObject wrapper)
     {
-        throw new System.NotImplementedException();
+        var centerPiece = trackSegment.trackPieces[trackSegment.trackPieces.Count / 2];
+        var grabInteractable = wrapper.AddComponent<XRGrabInteractable>();
+        grabInteractable.attachTransform = centerPiece.transform;
     }
 
     /// <summary>
@@ -122,8 +125,8 @@ public class TrackBuilder
 
         track.trackPieces.Remove(firstTrackPieceToReplace);
         track.trackPieces.Remove(lastTrackPieceToReplace);
-        GameObject.Destroy(firstTrackPieceToReplace.gameObject);
-        GameObject.Destroy(lastTrackPieceToReplace.gameObject);
+        GameObject.DestroyImmediate(firstTrackPieceToReplace.gameObject);
+        GameObject.DestroyImmediate(lastTrackPieceToReplace.gameObject);
     }
 
     private GameObject PackSegmentInWrapper(TrackSegment track)
