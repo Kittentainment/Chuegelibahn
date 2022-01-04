@@ -7,9 +7,22 @@ namespace Moving
 {
     public class MoveObjectController : MonoBehaviour
     {
+        
+        public static MoveObjectController Instance { get; private set; }
+        
         [SerializeField] private float movementSpeed = 1;
 
         [CanBeNull] private SnappingObjWrapper _selection;
+
+        private void Awake()
+        {
+            if (Instance != null)
+            {
+                Debug.LogWarning("MoveObjectController already exists");
+                Destroy(Instance.gameObject);
+            }
+            Instance = this;
+        }
 
         public void SelectAnObject([NotNull] SnappingObjWrapper objWrapper)
         {

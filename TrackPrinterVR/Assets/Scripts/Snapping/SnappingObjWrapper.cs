@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Moving;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Snapping
 {
@@ -141,6 +143,8 @@ namespace Snapping
             }
 
             IsBeingMoved = false;
+            // TODO: let go of this object (if not already) in VR (via code) once found out how to do it.
+            // GetComponent<XRGrabInteractable>()?
         }
 
         private static void ResetTransformLocally(Transform transformToReset)

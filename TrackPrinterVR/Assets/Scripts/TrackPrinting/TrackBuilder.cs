@@ -1,4 +1,5 @@
 using System;
+using Moving;
 using Snapping;
 using TrackPrinting;
 using UnityEngine;
@@ -114,9 +115,22 @@ public class TrackBuilder
 
     private void MakeInteractable(TrackSegment trackSegment, GameObject wrapper)
     {
-        var centerPiece = trackSegment.trackPieces[trackSegment.trackPieces.Count / 2];
+        var centerPiece = trackSegment.GetMiddleTrackPiece;
         var grabInteractable = wrapper.AddComponent<XRGrabInteractable>();
+        var rigidbody = grabInteractable.gameObject.GetComponent<Rigidbody>();
+        rigidbody.isKinematic = true;
         grabInteractable.attachTransform = centerPiece.transform;
+        // Events for when a piece is interacted with:
+        grabInteractable.selectEntered.AddListener(_ =>
+        {
+            Debug.Log("Grabbed a Segment which should now be selected and snapping to other segments.");
+            MoveObjectController.Instance.SelectAnObject(wrapper.GetComponent<SnappingObjWrapper>());
+        });
+        grabInteractable.selectExited.AddListener(_ =>
+        {
+            Debug.Log("Let go of an object which should now be deselected and snapped to anything if there is something near");
+            MoveObjectController.Instance.DeselectObject();
+        });
     }
 
     /// <summary>
@@ -150,6 +164,7 @@ public class TrackBuilder
     private GameObject PackSegmentInWrapper(TrackSegment track)
     {
         var wrapperGO = new GameObject($"Track Piece {_currTrackID++}");
+        wrapperGO.transform.position = track.GetMiddleTrackPiece.transform.position;
         var wrapper = wrapperGO.AddComponent<SnappingObjWrapper>();
         track.transform.parent = wrapper.objToSnap.transform;
         wrapper.UpdateAnchors(collectAnchors: true);

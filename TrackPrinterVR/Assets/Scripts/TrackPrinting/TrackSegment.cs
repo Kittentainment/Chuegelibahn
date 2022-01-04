@@ -11,6 +11,8 @@ namespace TrackPrinting
 
         public List<TrackPiece> trackPieces = new List<TrackPiece>();
 
+        public TrackPiece GetMiddleTrackPiece => trackPieces[trackPieces.Count / 2];
+
     }
 
 }
