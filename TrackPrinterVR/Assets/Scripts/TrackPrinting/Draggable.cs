@@ -41,7 +41,7 @@ public class Draggable : MonoBehaviour
         switch (currentState)
         {
             case DraggableState.Waiting:
-                StartGrab(); // TODO only for DEBUG, until we have input system and VR.
+                // StartGrab(); // TODO only for DEBUG, until we have input system and VR.
                 break;
             case DraggableState.Grabbed:
                 DragToLocation(transform.position); // TODO find a better way to continuously check the position while it is grabbed.
