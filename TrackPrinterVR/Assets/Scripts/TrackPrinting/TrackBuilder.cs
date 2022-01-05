@@ -43,6 +43,7 @@ public class TrackBuilder
         var draggablePos = draggable.position;
         var drawLine = draggablePos - trackPrinterPos;
         var outputDirection = trackPrinter.forward;
+        var upwardsDirection = trackPrinter.up;
         var distance = Vector3.Dot(drawLine, outputDirection);
         var pieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
         var numberOfNeededElements = Mathf.RoundToInt(distance / pieceLength) + 1;
@@ -52,7 +53,7 @@ public class TrackBuilder
         // if (numberOfNeededElements != _lastNumberOfElements) // TODO We Can't really check for that, as we also need to account for rotation changes of the Track Printer, and in VR this probably happens constantly. But it's helpful for Debug,
         // { 
             Debug.Log("numberOfNeededElements = " + numberOfNeededElements);
-            UpdateTrackPreview(numberOfNeededElements, outputDirection, trackPrinterPos);
+            UpdateTrackPreview(numberOfNeededElements, outputDirection, upwardsDirection, trackPrinterPos);
         // }
 
         _lastNumberOfElements = numberOfNeededElements;
@@ -71,9 +72,9 @@ public class TrackBuilder
     /// <param name="numberOfElements"></param>
     /// <param name="outputDirection"></param>
     /// <param name="startPos">The position of the printer, where we start printing the objects from</param>
-    private void UpdateTrackPreview(int numberOfElements, Vector3 outputDirection, Vector3 startPos)
+    private void UpdateTrackPreview(int numberOfElements, Vector3 outputDirection, Vector3 upwardsDirection, Vector3 startPos)
     {
-        var trackPrinterRotation = Quaternion.LookRotation(outputDirection);// Quaternion.FromToRotation(Vector3.forward, outputDirection); // The rotation of the TrackPrinter in WorldCoordinates.
+        var trackPrinterRotation = Quaternion.LookRotation(outputDirection, upwardsDirection);// Quaternion.FromToRotation(Vector3.forward, outputDirection); // The rotation of the TrackPrinter in WorldCoordinates.
         DeleteTrackPreview();
         _track = new GameObject("Track Builder Pieces").AddComponent<TrackSegment>();
         _track.transform.SetPositionAndRotation(startPos + TrackPrefabManager.GetVectorFromPivotToCenterBottom(type), trackPrinterRotation);
@@ -121,12 +122,12 @@ public class TrackBuilder
         rigidbody.isKinematic = true;
         grabInteractable.attachTransform = centerPiece.transform;
         // Events for when a piece is interacted with:
-        grabInteractable.activated.AddListener(_ =>
+        grabInteractable.selectEntered.AddListener(_ =>
         {
             Debug.Log("Grabbed a Segment which should now be selected and snapping to other segments.");
             MoveObjectController.Instance.SelectAnObject(wrapper.GetComponent<SnappingObjWrapper>());
         });
-        grabInteractable.deactivated.AddListener(_ =>
+        grabInteractable.selectEntered.AddListener(_ =>
         {
             Debug.Log("Let go of an object which should now be deselected and snapped to anything if there is something near");
             MoveObjectController.Instance.DeselectObject();
