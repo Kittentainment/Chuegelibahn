@@ -119,8 +119,11 @@ public class TrackBuilder
         var centerPiece = trackSegment.GetMiddleTrackPiece;
         var grabInteractable = wrapper.AddComponent<XRGrabInteractable>();
         var rigidbody = grabInteractable.gameObject.GetComponent<Rigidbody>();
+        var attachTransformGO = new GameObject("AttachTransform");
+        attachTransformGO.transform.parent = wrapper.transform;
+        attachTransformGO.transform.position = centerPiece.transform.position;
         rigidbody.isKinematic = true;
-        grabInteractable.attachTransform = centerPiece.transform;
+        grabInteractable.attachTransform = attachTransformGO.transform;
         // Events for when a piece is interacted with:
         grabInteractable.selectEntered.AddListener(_ =>
         {
