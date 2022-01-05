@@ -49,11 +49,11 @@ public class TrackBuilder
         
         // TODO add max number of elements
 
-        if (numberOfNeededElements != _lastNumberOfElements) // TODO We Can't really check for that, as we also need to account for rotation changes of the Track Printer, and in VR this probably happens constantly. But it's helpful for Debug,
-        { 
+        // if (numberOfNeededElements != _lastNumberOfElements) // TODO We Can't really check for that, as we also need to account for rotation changes of the Track Printer, and in VR this probably happens constantly. But it's helpful for Debug,
+        // { 
             Debug.Log("numberOfNeededElements = " + numberOfNeededElements);
             UpdateTrackPreview(numberOfNeededElements, outputDirection, trackPrinterPos);
-        }
+        // }
 
         _lastNumberOfElements = numberOfNeededElements;
         UpdatePositions(trackPrinterPos, draggablePos);
