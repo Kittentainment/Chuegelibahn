@@ -673,6 +673,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6590913813947856082, guid: edfdb4edc444a4343ae2a20d0fe19300, type: 3}
+      propertyPath: m_SmoothPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590913813947856082, guid: edfdb4edc444a4343ae2a20d0fe19300, type: 3}
+      propertyPath: m_SmoothRotation
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6590913813947856082, guid: edfdb4edc444a4343ae2a20d0fe19300, type: 3}
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 723629289}
