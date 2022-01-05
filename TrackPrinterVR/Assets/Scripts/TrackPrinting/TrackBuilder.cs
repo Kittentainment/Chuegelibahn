@@ -73,7 +73,7 @@ public class TrackBuilder
     /// <param name="startPos">The position of the printer, where we start printing the objects from</param>
     private void UpdateTrackPreview(int numberOfElements, Vector3 outputDirection, Vector3 startPos)
     {
-        var trackPrinterRotation = Quaternion.FromToRotation(Vector3.forward, outputDirection); // The rotation of the TrackPrinter in WorldCoordinates.
+        var trackPrinterRotation = Quaternion.LookRotation(outputDirection);// Quaternion.FromToRotation(Vector3.forward, outputDirection); // The rotation of the TrackPrinter in WorldCoordinates.
         DeleteTrackPreview();
         _track = new GameObject("Track Builder Pieces").AddComponent<TrackSegment>();
         _track.transform.SetPositionAndRotation(startPos + TrackPrefabManager.GetVectorFromPivotToCenterBottom(type), trackPrinterRotation);
