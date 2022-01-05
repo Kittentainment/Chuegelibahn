@@ -18,6 +18,7 @@ public class TrackPrinter : MonoBehaviour
         draggable.transform.position = transform.position;
         draggable.trackPrinter = this;
     }
+    
 
     public void OnSelected()
     {
@@ -46,10 +47,10 @@ public class TrackPrinter : MonoBehaviour
         }
         draggable.PrintCurrentTrack();
         draggable.LetGo();
-        InputController.Instance.RightHand.allowSelect = false;
-        InputController.Instance.RightHand.allowSelect = true;
         draggable.XRGrabInteractable.enabled = false;
         draggable.XRGrabInteractable.enabled = true;
+        InputController.Instance.RightHand.allowSelect = false;
+        InputController.Instance.RightHand.allowSelect = true;
         // TODO: Check how to let go correctly
         // http://snapandplug.com/xr-input-toolkit-2020-faq/#FAQ:-Can-I-force-a-hand/controller-to-drop-held-items?
     }
