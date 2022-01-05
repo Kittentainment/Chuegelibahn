@@ -121,12 +121,12 @@ public class TrackBuilder
         rigidbody.isKinematic = true;
         grabInteractable.attachTransform = centerPiece.transform;
         // Events for when a piece is interacted with:
-        grabInteractable.selectEntered.AddListener(_ =>
+        grabInteractable.activated.AddListener(_ =>
         {
             Debug.Log("Grabbed a Segment which should now be selected and snapping to other segments.");
             MoveObjectController.Instance.SelectAnObject(wrapper.GetComponent<SnappingObjWrapper>());
         });
-        grabInteractable.selectExited.AddListener(_ =>
+        grabInteractable.deactivated.AddListener(_ =>
         {
             Debug.Log("Let go of an object which should now be deselected and snapped to anything if there is something near");
             MoveObjectController.Instance.DeselectObject();
