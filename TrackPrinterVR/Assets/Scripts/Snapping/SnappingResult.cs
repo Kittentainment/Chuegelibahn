@@ -38,9 +38,14 @@ namespace Snapping
             return OtherAnchor.AnchorPosition - OwnAnchor.AnchorPosition;
         }
 
-        public Quaternion GetRotation()
+        public Quaternion GetForwardRotation()
         {
-            return Quaternion.FromToRotation(OwnAnchor.NormalVector, OtherAnchor.NormalVector * -1);
+            return Quaternion.FromToRotation(OwnAnchor.ForwardVector, OtherAnchor.ForwardVector * -1);
+        }
+
+        public Quaternion GetUpwardRotation()
+        {
+            return Quaternion.FromToRotation(OwnAnchor.UpwardVector, OtherAnchor.UpwardVector);
         }
 
         public override string ToString()

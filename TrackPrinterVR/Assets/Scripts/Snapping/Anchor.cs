@@ -23,8 +23,10 @@ namespace Snapping
 
         [SerializeField] private int snappingLayer = 0;
 
-        [SerializeField] private Vector3 normalDirection;
-        public Vector3 NormalVector => transform.rotation * normalDirection.normalized;
+        [SerializeField] private Vector3 forwardDirection;
+        [SerializeField] private Vector3 upwardDirection;
+        public Vector3 ForwardVector => transform.rotation * forwardDirection.normalized;
+        public Vector3 UpwardVector => transform.rotation * upwardDirection.normalized;
         
         public bool IsBeingMoved { get; set; }
 
@@ -55,7 +57,7 @@ namespace Snapping
                 // Only take anchors on the same layer:
                 .Where(anchor => anchor.snappingLayer == this.snappingLayer)
                 // only take anchors where the angle between the two normals are big enough (no small, as they need to point in opposite directions)
-                .Where(anchor => Mathf.Abs(Vector3.Angle(anchor.NormalVector, NormalVector)) > 180 - SnappingAngle)
+                .Where(anchor => Mathf.Abs(Vector3.Angle(anchor.ForwardVector, ForwardVector)) > 180 - SnappingAngle)
                 .ToList();
             if (anchorsInRange.Count > 0)
             {
@@ -71,7 +73,8 @@ namespace Snapping
         [Header("Debug Settings")] [SerializeField]
         private bool showDebugSettings = true;
         
-        private Color _gizmosNormalColor = Color.green;
+        private Color _gizmosForwardColor = Color.green;
+        private Color _gizmosUpwardsColor = Color.cyan;
 
         [SerializeField] private float gizmosSnappingVisibility = 0.2f;
 
@@ -98,8 +101,10 @@ namespace Snapping
             Gizmos.color = new Color(gizmosColor.r, gizmosColor.g, gizmosColor.b, 1f);
             Gizmos.DrawSphere(position, objectRadius);
             // Draw a sphere to represent the normal vector.
-            Gizmos.color = new Color(_gizmosNormalColor.r, _gizmosNormalColor.g, _gizmosNormalColor.b, 1f);
-            Gizmos.DrawLine(position, position + NormalVector);
+            Gizmos.color = new Color(_gizmosForwardColor.r, _gizmosForwardColor.g, _gizmosForwardColor.b, 1f);
+            Gizmos.DrawLine(position, position + ForwardVector);
+            Gizmos.color = new Color(_gizmosUpwardsColor.r, _gizmosUpwardsColor.g, _gizmosUpwardsColor.b, 1f);
+            Gizmos.DrawLine(position, position + UpwardVector);
         }
 
         private void OnDrawGizmosSelected()

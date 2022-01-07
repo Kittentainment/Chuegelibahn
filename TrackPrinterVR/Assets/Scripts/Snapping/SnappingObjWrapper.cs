@@ -157,9 +157,12 @@ namespace Snapping
         private static void ApplySnappingToTransform(Transform transform, SnappingResult snappingResult)
         {
             var movementVector = snappingResult.GetMovementVector();
-            var rotation = snappingResult.GetRotation();
+            var forwardRotation = snappingResult.GetForwardRotation();
             transform.Translate(movementVector, Space.World);
-            RotateAround(transform, snappingResult.OtherAnchor.transform.position, rotation);
+            var otherAnchorPos = snappingResult.OtherAnchor.transform.position;
+            RotateAround(transform, otherAnchorPos, forwardRotation);
+            var upwardRotation = snappingResult.GetUpwardRotation();
+            RotateAround(transform, otherAnchorPos, upwardRotation);
             // transform.localRotation = rotation;
         }
 
