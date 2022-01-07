@@ -9,7 +9,7 @@ namespace Snapping
             OwnAnchor = ownAnchor;
             OtherAnchor = otherAnchor;
             Distance = distance;
-            Debug.Log($"Created a new SnappingResult: {this}");
+//            Debug.Log($"Created a new SnappingResult: {this}");
         }
 
         /// <summary>

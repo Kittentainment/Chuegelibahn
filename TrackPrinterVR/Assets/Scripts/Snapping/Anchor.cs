@@ -61,7 +61,7 @@ namespace Snapping
                 .ToList();
             if (anchorsInRange.Count > 0)
             {
-                Debug.Log("Anchor::GetOtherAnchorsInRange - Found Anchors in Range!");
+//                Debug.Log("Anchor::GetOtherAnchorsInRange - Found Anchors in Range!");
             }
 
             return anchorsInRange;
