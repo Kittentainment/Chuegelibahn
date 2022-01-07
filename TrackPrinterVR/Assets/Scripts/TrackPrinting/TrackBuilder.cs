@@ -47,16 +47,17 @@ public class TrackBuilder
         var outputDirection = trackPrinter.forward;
         var upwardsDirection = trackPrinter.up;
         var distance = Vector3.Dot(drawLine, outputDirection);
-        var angle = Vector3.SignedAngle(outputDirection, draggable.forward, upwardsDirection);
+        var horizontalAngle = Vector3.SignedAngle(outputDirection, draggable.forward, upwardsDirection);
         var pieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
         var numberOfNeededElements = type switch
         {
-            TrackType.Straight => Mathf.RoundToInt(distance / pieceLength) + 1,
-            TrackType.Left => Mathf.RoundToInt(angle < 0 ? (angle < -90 ? 180 : 0) : angle / TrackPrefabManager.GetRotationOfTrackPiece(type)) + 1,
+            TrackType.Straight => Mathf.RoundToInt(distance / pieceLength),
+            TrackType.Left => Mathf.RoundToInt(GetActualAngle(horizontalAngle) / TrackPrefabManager.GetRotationOfTrackPiece(type)),
             _ => throw new ArgumentOutOfRangeException()
         };
-        
-        // TODO add max number of elements
+        numberOfNeededElements += 1; // Because they are rounded down.
+        if (numberOfNeededElements <= 0) return;
+
         if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
         {
             numberOfNeededElements = TrackPrefabManager.GetMaximumNumberOfPieces(type);
@@ -71,11 +72,26 @@ public class TrackBuilder
         _lastNumberOfElements = numberOfNeededElements;
         UpdateLastPositions(trackPrinterPos, draggablePos);
 
-        if (numberOfNeededElements > 30 && _draggable.isGrabbed)
+        // if (numberOfNeededElements > 30 && _draggable.isGrabbed)
+        // {
+        //     // _draggable.LetGo(); // DEBUG only for testing
+        //     // _draggable.trackPrinter!.PrintCurrentTrack(); // DEBUG only for testing
+        // }
+    }
+
+    /// <summary>
+    /// The angle used for determining the number of pieces if we want a curved piece.
+    /// </summary>
+    /// <param name="angle"></param>
+    /// <returns></returns>
+    private float GetActualAngle(float angle)
+    {
+        return angle switch
         {
-            // _draggable.LetGo(); // DEBUG only for testing
-            // _draggable.trackPrinter!.PrintCurrentTrack(); // DEBUG only for testing
-        }
+            >= 0 and < 90 => 180,
+            >= 90         => 0,
+            _             => angle + 180
+        };
     }
 
     /// <summary>
