@@ -16,7 +16,7 @@ public class Draggable : MonoBehaviour
     
     public XRGrabInteractable XRGrabInteractable { get; private set; }
     
-    public TrackType selectedType => trackPrinter!.selectedType;
+    public TrackType selectedType => trackPrinter!.SelectedType;
 
     public TrackBuilder? currentTrackBuilder { get; private set; }
 
@@ -119,7 +119,7 @@ public class Draggable : MonoBehaviour
 
         if (currentTrackBuilder == null) // If we were retracting before and still have one, we can just keep it.
         {
-            currentTrackBuilder = new TrackBuilder(trackPrinter!.selectedType, trackPrinter.transform.position, this.transform.position, this);
+            currentTrackBuilder = new TrackBuilder(trackPrinter!.SelectedType, trackPrinter.transform.position, this.transform.position, this);
         }
 
         transform.parent = null;

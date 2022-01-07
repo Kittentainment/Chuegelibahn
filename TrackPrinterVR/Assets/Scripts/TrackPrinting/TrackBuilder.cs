@@ -86,12 +86,11 @@ public class TrackBuilder
     /// <returns></returns>
     private float GetActualAngle(float angle)
     {
-        return angle switch
-        {
-            >= 0 and < 90 => 180,
-            >= 90         => 0,
-            _             => angle + 180
-        };
+        if (angle >= 0 && angle < 90)
+            return 180;
+        if (angle >= 90)
+            return 0;
+        return angle + 180;
     }
 
     /// <summary>

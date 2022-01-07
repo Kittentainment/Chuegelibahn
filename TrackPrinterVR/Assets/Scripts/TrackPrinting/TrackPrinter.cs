@@ -7,8 +7,13 @@ using UnityEngine;
 public class TrackPrinter : MonoBehaviour
 {
     [SerializeField] private Draggable draggablePrefab; // TODO get the prefab in a more elegant way.
-    
-    public TrackType selectedType { get; set; } = TrackType.Left;
+    [SerializeField] private TrackType selectedType = TrackType.Straight;
+
+    public TrackType SelectedType
+    {
+        get => selectedType;
+        set => selectedType = value;
+    }
 
     public Draggable draggable { get; private set; }
 

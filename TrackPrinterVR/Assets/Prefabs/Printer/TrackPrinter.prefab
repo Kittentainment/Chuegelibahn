@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   draggablePrefab: {fileID: 223872951933137727, guid: 958889a5c2d194a5c9f556ae86c356e8, type: 3}
+  selectedType: 0
 --- !u!54 &8331550833040021327
 Rigidbody:
   m_ObjectHideFlags: 0
