@@ -43,6 +43,16 @@ namespace Snapping
             return Quaternion.FromToRotation(OwnAnchor.ForwardVector, OtherAnchor.ForwardVector * -1);
         }
 
+        public Vector3 GetForwardDirectionOwnAnchor()
+        {
+            return OtherAnchor.ForwardVector.normalized;
+        }
+
+        public float GetAngleBetweenUpwardVectors()
+        {
+            return Vector3.Angle(OtherAnchor.UpwardVector, OtherAnchor.UpwardVector);
+        }
+
         public Quaternion GetUpwardRotation()
         {
             return Quaternion.FromToRotation(OwnAnchor.UpwardVector, OtherAnchor.UpwardVector);
