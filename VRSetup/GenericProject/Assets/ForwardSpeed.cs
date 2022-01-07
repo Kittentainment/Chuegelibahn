@@ -13,7 +13,6 @@ public class ForwardSpeed : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-        this.GetComponent<Rigidbody>().AddForce(-(transform.right)*Time.fixedDeltaTime, ForceMode.Force);
+        this.GetComponent<Rigidbody>().AddForce(-(transform.right) * (Time.deltaTime * 750), ForceMode.Force);
     }
-}
+}// 
