@@ -23,10 +23,10 @@ namespace Snapping
 
         [SerializeField] private int snappingLayer = 0;
 
-        [SerializeField] private Vector3 forwardDirection;
-        [SerializeField] private Vector3 upwardDirection;
-        public Vector3 ForwardVector => transform.rotation * forwardDirection.normalized;
-        public Vector3 UpwardVector => transform.rotation * upwardDirection.normalized;
+        // [SerializeField] private Vector3 forwardDirection;
+        // [SerializeField] private Vector3 upwardDirection;
+        public Vector3 ForwardVector => transform.forward; //transform.rotation * forwardDirection.normalized;
+        public Vector3 UpwardVector => transform.up; //transform.rotation * upwardDirection.normalized;
         
         public bool IsBeingMoved { get; set; }
 
@@ -73,8 +73,8 @@ namespace Snapping
         [Header("Debug Settings")] [SerializeField]
         private bool showDebugSettings = true;
         
-        private Color _gizmosForwardColor = Color.green;
-        private Color _gizmosUpwardsColor = Color.cyan;
+        private Color _gizmosForwardColor = Color.blue;
+        private Color _gizmosUpwardsColor = Color.green;
 
         [SerializeField] private float gizmosSnappingVisibility = 0.2f;
 
