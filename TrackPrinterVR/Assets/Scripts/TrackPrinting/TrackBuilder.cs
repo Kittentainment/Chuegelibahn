@@ -55,9 +55,9 @@ public class TrackBuilder
             TrackType.Left => Mathf.RoundToInt(GetActualAngle(horizontalAngle) / TrackPrefabManager.GetRotationOfTrackPiece(type)),
             _ => throw new ArgumentOutOfRangeException()
         };
-        numberOfNeededElements += 1; // Because they are rounded down.
         if (numberOfNeededElements <= 0) return;
-
+        numberOfNeededElements += 1; // Because they are rounded down. But if there should be none it should stay none
+        
         if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
         {
             numberOfNeededElements = TrackPrefabManager.GetMaximumNumberOfPieces(type);
