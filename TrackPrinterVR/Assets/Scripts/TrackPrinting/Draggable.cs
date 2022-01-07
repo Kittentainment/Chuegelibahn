@@ -70,6 +70,12 @@ public class Draggable : MonoBehaviour
         LetGo();
     }
     
+    public void OnActivate()
+    {
+        Debug.Log("TrackPrinter -- OnActivate");
+        trackPrinter!.OnActivate();
+    }
+    
 
     /// <summary>
     /// Retracts this Draggable back to its TrackPrinter.

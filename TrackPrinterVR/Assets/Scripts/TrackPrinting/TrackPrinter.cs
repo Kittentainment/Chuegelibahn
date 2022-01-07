@@ -34,8 +34,7 @@ public class TrackPrinter : MonoBehaviour
     {
         Debug.Log("Let go of TrackPrinter");
     }
-
-
+    
     public void OnActivate()
     {
         Debug.Log("TrackPrinter -- OnActivate");
@@ -64,5 +63,5 @@ public class TrackPrinter : MonoBehaviour
         // TODO: Check how to let go correctly
         // http://snapandplug.com/xr-input-toolkit-2020-faq/#FAQ:-Can-I-force-a-hand/controller-to-drop-held-items?
     }
-    
+
 }
