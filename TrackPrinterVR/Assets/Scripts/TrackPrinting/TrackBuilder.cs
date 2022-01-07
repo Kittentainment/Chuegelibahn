@@ -188,7 +188,13 @@ public class TrackBuilder
         AddSnappingPoints(segment);
         var wrapper = PackSegmentInWrapper(segment);
         MakeInteractable(segment, wrapper);
+        MakeThrowableInTrash(wrapper);
         return wrapper;
+    }
+
+    private void MakeThrowableInTrash(SnappingObjWrapper wrapper)
+    {
+        wrapper.gameObject.AddComponent<ThrowableInTrash>();
     }
 
     private void MakeInteractable(TrackSegment trackSegment, SnappingObjWrapper wrapper)
