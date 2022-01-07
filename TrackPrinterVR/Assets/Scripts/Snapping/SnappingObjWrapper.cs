@@ -146,15 +146,33 @@ namespace Snapping
             // GetComponent<XRGrabInteractable>()?
         }
 
-        private static void ResetTransformLocally(Transform transformToReset)
+        /// <summary>
+        /// Snap it back to where the original part is.
+        ///
+        /// If no reset Location is given, the original part is assumed to be the parent, and the reset location is (0,0,0) regarding to the parent.
+        /// </summary>
+        /// <param name="transformToReset">The transform we want to be reset.</param>
+        /// <param name="resetLocation">The transform – if any – we want this GO to take the location and rotation from.
+        /// If null, we use this GOs parent transform (meaning locally it is set to 0).</param>
+        private static void ResetTransformLocally(Transform transformToReset, Transform resetLocation = null)
         {
-            transformToReset.localPosition = Vector3.zero;
-            // _objToSnap.transform.rotation.Set(Quaternion.identity.x, Quaternion.identity.y, Quaternion.identity.z, Quaternion.identity.w);
-            transformToReset.localEulerAngles = Vector3.zero;
+            Debug.Log("ResetTransformLocally");
+            if (resetLocation == null)
+            {
+                transformToReset.localPosition = Vector3.zero;
+                transformToReset.localEulerAngles = Vector3.zero;
+            }
+            else
+            {
+                transformToReset.position = resetLocation.position;
+                transformToReset.rotation = resetLocation.rotation;
+            }
+            
         }
 
         private static void ApplySnappingToTransform(Transform transform, SnappingResult snappingResult)
         {
+            Debug.Log("ApplySnappingToTransform");
             var movementVector = snappingResult.GetMovementVector();
             var forwardRotation = snappingResult.GetForwardRotation();
             transform.Translate(movementVector, Space.World);
@@ -192,7 +210,8 @@ namespace Snapping
                     "Please create the snapping preview object before calling SnapToCurrentSnappingPosition()");
 
             var transformToSnap = UseSnappingPreviews ? CurrentSnappingPreviewGO.transform : objToSnap.transform;
-            ResetTransformLocally(transformToSnap);
+            var parentTransform = UseSnappingPreviews ? transform : null; // Null will reset it to 0 locally.
+            ResetTransformLocally(transformToSnap, parentTransform);
             // _objToSnap.transform.Translate(CurrentSnapping.GetMovementVector());
             ApplySnappingToTransform(transformToSnap, CurrentSnapping);
         }
