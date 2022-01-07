@@ -12,6 +12,7 @@ public class TrackPrefabManager : MonoBehaviour
     [SerializeField] private SnappingObjWrapper _baseObjectWrapperPrefab;
     public SnappingObjWrapper baseObjectWrapperPrefab => _baseObjectWrapperPrefab;
 
+    // Straight Pieces
     [SerializeField] private TrackPiece straightPiece;
     public TrackPiece StraightPiece => straightPiece;
     
@@ -20,8 +21,8 @@ public class TrackPrefabManager : MonoBehaviour
     
     [SerializeField] private TrackPiece straightPieceSnappingLast;
     public TrackPiece StraightPieceSnappingLast => straightPieceSnappingLast;
-
     
+    // Curve Pieces
     [SerializeField] private TrackPiece curvePiece;
     public TrackPiece CurvePiece => curvePiece;
 
@@ -47,23 +48,23 @@ public class TrackPrefabManager : MonoBehaviour
         return type switch
         {
             TrackType.Straight => 0.01f,
-            TrackType.Left => 0.1f,
-            TrackType.Right => 0.1f,
-            TrackType.Up => 0.1f,
-            TrackType.Down => 0.1f,
+            TrackType.Left => 0.01f,
+            // TrackType.Right => 0.1f,
+            // TrackType.Up => 0.1f,
+            // TrackType.Down => 0.1f,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
 
-    public static Vector3 GetVectorFromPivotToCenterBottom(TrackType type)
+    public static Vector3 GetVectorFromPivotToCenterBottom(TrackType type, Transform startPos)
     {
         return type switch
         {
-            TrackType.Straight => Vector3.right * 0.05f,
-            TrackType.Left => Vector3.left * 0.05f,
-            TrackType.Right => Vector3.left * 0.05f,
-            TrackType.Up => Vector3.left * 0.05f,
-            TrackType.Down => Vector3.left * 0.05f,
+            TrackType.Straight => startPos.right * 0.05f,
+            TrackType.Left => startPos.right * 0.05f,
+            // TrackType.Right => Vector3.left * 0.05f,
+            // TrackType.Up => Vector3.left * 0.05f,
+            // TrackType.Down => Vector3.left * 0.05f,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
@@ -72,11 +73,11 @@ public class TrackPrefabManager : MonoBehaviour
     {
         return type switch
         {
-            TrackType.Straight => new TrackPiecePrefabs(type, StraightPieceSnappingFirst, StraightPieceSnappingLast, StraightPiece),
-            TrackType.Left => throw new ArgumentOutOfRangeException(nameof(type)),
-            TrackType.Right => throw new ArgumentOutOfRangeException(nameof(type)),
-            TrackType.Up => throw new ArgumentOutOfRangeException(nameof(type)),
-            TrackType.Down => throw new ArgumentOutOfRangeException(nameof(type)),
+            TrackType.Straight => new TrackPiecePrefabs(type, StraightPieceSnappingFirst, StraightPieceSnappingLast, StraightPiece, StraightPiece),
+            TrackType.Left => new TrackPiecePrefabs(type, StraightPieceSnappingFirst, StraightPieceSnappingLast, CurvePiece, StraightPiece),
+            // TrackType.Right => throw new ArgumentOutOfRangeException(nameof(type)),
+            // TrackType.Up => throw new ArgumentOutOfRangeException(nameof(type)),
+            // TrackType.Down => throw new ArgumentOutOfRangeException(nameof(type)),
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
     }

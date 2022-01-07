@@ -8,7 +8,7 @@ public class TrackPrinter : MonoBehaviour
 {
     [SerializeField] private Draggable draggablePrefab; // TODO get the prefab in a more elegant way.
     
-    public TrackType selectedType { get; set; } = TrackType.Straight;
+    public TrackType selectedType { get; set; } = TrackType.Left;
 
     public Draggable draggable { get; private set; }
 

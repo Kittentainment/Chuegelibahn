@@ -1,4 +1,5 @@
 using System;
+using ExtensionMethods;
 using Moving;
 using Snapping;
 using TrackPrinting;
@@ -17,19 +18,19 @@ public class TrackBuilder
 
     private int _lastNumberOfElements = 0;
 
-    private TrackSegment _track;
+    private TrackSegment _trackBuilderSegment;
     private static TrackPrefabManager prefabManager => TrackPrefabManager.instance;
 
     public TrackBuilder(TrackType type, Vector3 trackPrinterPos, Vector3 draggablePos, Draggable draggable)
     {
         _draggable = draggable;
         this.type = type;
-        UpdatePositions(trackPrinterPos, draggablePos);
-        _track = new GameObject().AddComponent<TrackSegment>();
-        _track.transform.position = trackPrinterPos;
+        UpdateLastPositions(trackPrinterPos, draggablePos);
+        _trackBuilderSegment = new GameObject().AddComponent<TrackSegment>();
+        _trackBuilderSegment.transform.position = trackPrinterPos;
     }
 
-    private void UpdatePositions(Vector3 trackPrinterPos, Vector3 draggablePos)
+    private void UpdateLastPositions(Vector3 trackPrinterPos, Vector3 draggablePos)
     {
         lastTrackPrinterPos = trackPrinterPos;
         lastDraggablePos = draggablePos;
@@ -53,11 +54,11 @@ public class TrackBuilder
         // if (numberOfNeededElements != _lastNumberOfElements) // TODO We Can't really check for that, as we also need to account for rotation changes of the Track Printer, and in VR this probably happens constantly. But it's helpful for Debug,
         // { 
             Debug.Log("numberOfNeededElements = " + numberOfNeededElements);
-            UpdateTrackPreview(numberOfNeededElements, outputDirection, upwardsDirection, trackPrinterPos);
+            UpdateTrackPreview(numberOfNeededElements, outputDirection, upwardsDirection, trackPrinter);
         // }
 
         _lastNumberOfElements = numberOfNeededElements;
-        UpdatePositions(trackPrinterPos, draggablePos);
+        UpdateLastPositions(trackPrinterPos, draggablePos);
 
         if (numberOfNeededElements > 30 && _draggable.isGrabbed)
         {
@@ -67,42 +68,45 @@ public class TrackBuilder
     }
 
     /// <summary>
-    /// 
+    /// Update the pieces which show where the piece to create will be created.
+    /// They will also be used to create the actual pieces.
     /// </summary>
-    /// <param name="numberOfElements"></param>
-    /// <param name="outputDirection"></param>
-    /// <param name="startPos">The position of the printer, where we start printing the objects from</param>
-    private void UpdateTrackPreview(int numberOfElements, Vector3 outputDirection, Vector3 upwardsDirection, Vector3 startPos)
+    /// <param name="numberOfElements">How many Pieces should be created.</param>
+    /// <param name="outputDirection">The direction the printer is facing, where at least the first piece should also face to.</param>
+    /// <param name="upwardsDirection">The upward direction of the printer.</param>
+    /// <param name="printerTransform">The position of the printer, where we start printing the objects from.</param>
+    private void UpdateTrackPreview(int numberOfElements, Vector3 outputDirection, Vector3 upwardsDirection, Transform printerTransform)
     {
+        Vector3 startPos = printerTransform.position;
         var trackPrinterRotation = Quaternion.LookRotation(outputDirection, upwardsDirection);// Quaternion.FromToRotation(Vector3.forward, outputDirection); // The rotation of the TrackPrinter in WorldCoordinates.
         DeleteTrackPreview();
-        _track = new GameObject("Track Builder Pieces").AddComponent<TrackSegment>();
-        _track.transform.SetPositionAndRotation(startPos + TrackPrefabManager.GetVectorFromPivotToCenterBottom(type), trackPrinterRotation);
+        _trackBuilderSegment = new GameObject("Track Segment").AddComponent<TrackSegment>();
+        _trackBuilderSegment.transform.SetPositionAndRotation(startPos + TrackPrefabManager.GetVectorFromPivotToCenterBottom(type, printerTransform), trackPrinterRotation);
         var singlePieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
         var singlePieceRotation = TrackPrefabManager.GetRotationOfTrackPiece(type);
         for (var i = 0; i < numberOfElements; i++)
         {
-            var trackPiece = GameObject.Instantiate(prefabManager.StraightPiece, _track.transform);
+            var trackPiece = GameObject.Instantiate(prefabManager.StraightPiece, _trackBuilderSegment.transform);
             trackPiece.name = $"New TrackPiece {i}";
             var position = type switch {
-                TrackType.Straight => _track.transform.position + i * singlePieceLength * outputDirection,
-                TrackType.Left => _track.transform.position,
+                TrackType.Straight => _trackBuilderSegment.transform.position + i * singlePieceLength * outputDirection,
+                TrackType.Left => _trackBuilderSegment.transform.position,
                 _ => throw new ArgumentOutOfRangeException()
             };
             var rotation = type switch {
                 TrackType.Straight => trackPrinterRotation,
-                TrackType.Left => Quaternion.FromToRotation(Vector3.forward, outputDirection + new Vector3(0, singlePieceRotation * i, 0)),
+                TrackType.Left => Quaternion.LookRotation(outputDirection.RotateAround(upwardsDirection, i * singlePieceRotation), upwardsDirection),
                 _ => throw new ArgumentOutOfRangeException()
             };
             trackPiece.transform.SetPositionAndRotation(position, rotation);
-            _track.trackPieces.Add(trackPiece);
+            _trackBuilderSegment.trackPieces.Add(trackPiece);
         }
     }
 
     public GameObject PrintCurrentTrack()
     {
-        var currentTrack = _track;
-        _track = null;
+        var currentTrack = _trackBuilderSegment;
+        _trackBuilderSegment = null;
         return FinishTrackPiece(currentTrack);
     }
 
@@ -180,9 +184,9 @@ public class TrackBuilder
 
     private void DeleteTrackPreview()
     {
-        if (_track == null) return;
-        _track.trackPieces.Clear();
-        GameObject.Destroy(_track.gameObject);
+        if (_trackBuilderSegment == null) return;
+        _trackBuilderSegment.trackPieces.Clear();
+        GameObject.Destroy(_trackBuilderSegment.gameObject);
     }
 
     public void DestroyYourself()
