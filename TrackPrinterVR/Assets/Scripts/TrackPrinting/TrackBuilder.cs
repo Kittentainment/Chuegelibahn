@@ -92,25 +92,56 @@ public class TrackBuilder
         for (var i = 0; i < numberOfElements; i++)
         {
             TrackPiece original;
+            // Use the correct piece for type and whether in the middle or at the end.
             if (i == 0 || i == numberOfElements - 1)
                 original = prefabManager.GetTrackPrefabsForType(type).EndPieces;
             else
                 original = prefabManager.GetTrackPrefabsForType(type).Middle;
             var trackPiece = GameObject.Instantiate(original, _trackBuilderSegment.transform);
             trackPiece.name = $"New TrackPiece {i}";
-            var position = type switch {
-                TrackType.Straight => _trackBuilderSegment.transform.position + i * singlePieceLength * outputDirection,
-                TrackType.Left => _trackBuilderSegment.transform.position,
-                _ => throw new ArgumentOutOfRangeException()
-            };
-            var rotation = type switch {
-                TrackType.Straight => trackPrinterRotation,
-                TrackType.Left => Quaternion.LookRotation(outputDirection.RotateAround(upwardsDirection, i * singlePieceRotation), upwardsDirection),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            // Use the correct position and rotation logic according to type and end/middle
+            var rotation = GetPieceRotation(outputDirection, upwardsDirection, trackPrinterRotation, i, singlePieceRotation, numberOfElements);
+            var position = GetPiecePosition(outputDirection, upwardsDirection, i, singlePieceLength, singlePieceRotation, numberOfElements);
+            // End pieces for the curve
             trackPiece.transform.SetPositionAndRotation(position, rotation);
             _trackBuilderSegment.trackPieces.Add(trackPiece);
         }
+    }
+
+    private Vector3 GetPiecePosition(Vector3 outputDirection, Vector3 upwardsDirection, int i, float singlePieceLength, float singlePieceRotation, int numberOfElements)
+    {
+        var position = type switch
+        {
+            TrackType.Straight => _trackBuilderSegment.transform.position + i * singlePieceLength * outputDirection,
+            TrackType.Left => _trackBuilderSegment.transform.position,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        if (type == TrackType.Left && i == numberOfElements - 1)
+        {
+            // Curves end pieces need special handling
+            position += outputDirection.RotateAround(upwardsDirection, (i - 1) * singlePieceRotation).normalized *
+                        singlePieceLength;
+        }
+        return position;
+    }
+
+    private Quaternion GetPieceRotation(Vector3 outputDirection, Vector3 upwardsDirection, Quaternion trackPrinterRotation,
+        int i, float singlePieceRotation, int numberOfElements)
+    {
+        if (type == TrackType.Left && i == numberOfElements - 1)
+        {
+            // The last element should not be rotated again, as it is a straight piece
+            i--;
+        }
+        var rotation = type switch
+        {
+            TrackType.Straight => trackPrinterRotation,
+            TrackType.Left => Quaternion.LookRotation(
+                outputDirection.RotateAround(upwardsDirection, i * singlePieceRotation), upwardsDirection),
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        return rotation;
     }
 
     public SnappingObjWrapper PrintCurrentTrack()
