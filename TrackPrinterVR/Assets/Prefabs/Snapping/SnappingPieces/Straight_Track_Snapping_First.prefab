@@ -11,6 +11,14 @@ PrefabInstance:
       propertyPath: normalDirection.z
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 49789252648189860, guid: 225797142216d4d7fb8ad4d08a78d414, type: 3}
+      propertyPath: forwardDirection.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 49789252648189860, guid: 225797142216d4d7fb8ad4d08a78d414, type: 3}
+      propertyPath: forwardDirection.z
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 4845748061718148280, guid: 225797142216d4d7fb8ad4d08a78d414, type: 3}
       propertyPath: m_Name
       value: Straight_Track_Snapping_First
