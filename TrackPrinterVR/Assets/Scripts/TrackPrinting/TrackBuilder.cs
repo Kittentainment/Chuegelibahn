@@ -124,6 +124,8 @@ public class TrackBuilder
         attachTransformGO.transform.position = centerPiece.transform.position;
         rigidbody.isKinematic = true;
         grabInteractable.attachTransform = attachTransformGO.transform;
+        grabInteractable.smoothPosition = true;
+        grabInteractable.smoothRotation = true;
         // Events for when a piece is interacted with:
         grabInteractable.selectEntered.AddListener(_ =>
         {
