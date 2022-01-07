@@ -138,7 +138,7 @@ namespace Snapping
                 else
                     ResetTransformLocally(objToSnap.transform);
 
-                ApplySnappingToTransform(transform, CurrentSnapping);
+                ApplySnappingToTransform(transform, CurrentSnapping, keepAnchorPosition: false);
             }
 
             IsBeingMoved = false;
@@ -170,12 +170,46 @@ namespace Snapping
             
         }
 
-        private static void ApplySnappingToTransform(Transform transform, SnappingResult snappingResult)
+        /// <summary>
+        /// Applies the Snapping, so that the given transform is snapped perfectly to the transform of the
+        /// <code>SnappingResult.OtherAnchor</code>'s transform.
+        /// </summary>
+        /// <param name="transform">The transform to translate and rotate.</param>
+        /// <param name="snappingResult">The <code>SnappingResult</code> which this should apply to.</param>
+        /// <param name="keepAnchorPosition">Whether the <code>SnappingResult.OwnAnchor</code> should stay where it has been, or be at the OtherAnchor's position afterwards.</param>
+        private static void ApplySnappingToTransform(Transform transform, SnappingResult snappingResult, bool keepAnchorPosition)
         {
             Debug.Log("ApplySnappingToTransform");
-            var movementVector = snappingResult.GetMovementVector();
-            transform.Translate(movementVector, Space.World);
-            transform.rotation = snappingResult.GetTotalRotation();
+            
+            // store current parent configuration and anchor position
+            var ownAnchorTransform = snappingResult.OwnAnchor.transform;
+            var anchorParent = ownAnchorTransform.parent;
+            var transformParent = transform.parent;
+            var anchorPos = ownAnchorTransform.position;
+            var anchorRot = ownAnchorTransform.rotation;
+            // Set the transform to move as a child of the anchor which we move
+            ownAnchorTransform.parent = null;
+            transform.parent = ownAnchorTransform;
+            // Move the anchor to the other anchor it snaps to (and take everything else with it, as we set the transform to the 
+            ownAnchorTransform.position = snappingResult.OtherAnchor.transform.position;
+            snappingResult.OwnAnchor.transform.rotation = snappingResult.GetTotalRotation();
+
+            // Set parents back to previous state
+            transform.parent = null;
+            snappingResult.OwnAnchor.transform.parent = null;
+            transform.parent = transformParent;
+            if (keepAnchorPosition)
+            {
+                snappingResult.OwnAnchor.transform.position = anchorPos;
+                snappingResult.OwnAnchor.transform.rotation = anchorRot;
+            }
+            snappingResult.OwnAnchor.transform.parent = anchorParent;
+
+
+            // var movementVector = snappingResult.GetMovementVector();
+            // transform.Translate(movementVector, Space.World);
+            //
+            // transform.rotation = snappingResult.GetTotalRotation();
             // var forwardRotation = snappingResult.GetForwardRotation();
             // RotateAround(transform, snappingResult.OtherAnchor.transform.position, forwardRotation);
             // var upwardAngle = snappingResult.GetAngleBetweenUpwardVectors();
@@ -216,7 +250,7 @@ namespace Snapping
             var parentTransform = UseSnappingPreviews ? transform : null; // Null will reset it to 0 locally.
             ResetTransformLocally(transformToSnap, parentTransform);
             // _objToSnap.transform.Translate(CurrentSnapping.GetMovementVector());
-            ApplySnappingToTransform(transformToSnap, CurrentSnapping);
+            ApplySnappingToTransform(transformToSnap, CurrentSnapping, keepAnchorPosition: UseSnappingPreviews);
         }
 
         /// <summary>
