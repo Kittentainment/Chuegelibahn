@@ -15,7 +15,7 @@ namespace Snapping
         /// <summary>
         /// Whether to use a preview to indicate where the object will snap, if let go, or to snap the object directly.
         /// </summary>
-        public static bool UseSnappingPreviews { get; set; } = false;
+        public static bool UseSnappingPreviews { get; set; } = true;
 
         #endregion
 
@@ -52,7 +52,10 @@ namespace Snapping
                 {
                     Destroy(_currentSnappingPreviewGO);
                 }
-
+                if (value == null && _currentSnappingPreviewGO != null)
+                {
+                    Destroy(_currentSnappingPreviewGO);
+                }
                 _currentSnappingPreviewGO = value;
             }
         }
