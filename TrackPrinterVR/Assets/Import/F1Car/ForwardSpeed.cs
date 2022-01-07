@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class ForwardSpeed : MonoBehaviour
 {
-    [SerializeField] private int Speedfactor;
+
+    private int _trackPiecesInProximity = 0;
+
+    public bool IsInTrackProximity => _trackPiecesInProximity > 0;
+
+    [SerializeField] private int speedFactor = 500;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +19,29 @@ public class ForwardSpeed : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
-        this.GetComponent<Rigidbody>().AddForce(-(transform.right) * (Time.deltaTime * Speedfactor), ForceMode.Force);
+        if (IsInTrackProximity)
+        {
+            this.GetComponent<Rigidbody>().AddForce(-(transform.right) * (Time.deltaTime * speedFactor), ForceMode.Force);
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == SortingLayer.NameToID("Track"))
+        {
+            _trackPiecesInProximity++;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == SortingLayer.NameToID("Track"))
+        {
+            if (_trackPiecesInProximity <= 0)
+            {
+                throw new Exception("ForwardSpeed::OnTriggerExit - Somehow we removed more track pieces than we added. should never be minus 0;");
+            }
+            _trackPiecesInProximity--;
+        }
     }
 }
