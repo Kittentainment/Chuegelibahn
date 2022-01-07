@@ -50,6 +50,10 @@ public class TrackBuilder
         var numberOfNeededElements = Mathf.RoundToInt(distance / pieceLength) + 1;
         
         // TODO add max number of elements
+        if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
+        {
+            numberOfNeededElements = TrackPrefabManager.GetMaximumNumberOfPieces(type);
+        }
 
         // if (numberOfNeededElements != _lastNumberOfElements) // TODO We Can't really check for that, as we also need to account for rotation changes of the Track Printer, and in VR this probably happens constantly. But it's helpful for Debug,
         // { 
@@ -103,14 +107,19 @@ public class TrackBuilder
         }
     }
 
-    public GameObject PrintCurrentTrack()
+    public SnappingObjWrapper PrintCurrentTrack()
     {
+        
+        if (_lastNumberOfElements < TrackPrefabManager.GetMinimumNumberOfPieces(type))
+        {
+            return null;
+        }
         var currentTrack = _trackBuilderSegment;
         _trackBuilderSegment = null;
         return FinishTrackPiece(currentTrack);
     }
 
-    private GameObject FinishTrackPiece(TrackSegment segment)
+    private SnappingObjWrapper FinishTrackPiece(TrackSegment segment)
     {
         AddSnappingPoints(segment);
         var wrapper = PackSegmentInWrapper(segment);
@@ -118,10 +127,10 @@ public class TrackBuilder
         return wrapper;
     }
 
-    private void MakeInteractable(TrackSegment trackSegment, GameObject wrapper)
+    private void MakeInteractable(TrackSegment trackSegment, SnappingObjWrapper wrapper)
     {
         var centerPiece = trackSegment.GetMiddleTrackPiece;
-        var grabInteractable = wrapper.AddComponent<XRGrabInteractable>();
+        var grabInteractable = wrapper.gameObject.AddComponent<XRGrabInteractable>();
         var rigidbody = grabInteractable.gameObject.GetComponent<Rigidbody>();
         var attachTransformGO = new GameObject("AttachTransform");
         attachTransformGO.transform.parent = wrapper.transform;
@@ -134,7 +143,7 @@ public class TrackBuilder
         grabInteractable.selectEntered.AddListener(_ =>
         {
             Debug.Log("Grabbed a Segment which should now be selected and snapping to other segments.");
-            MoveObjectController.Instance.SelectAnObject(wrapper.GetComponent<SnappingObjWrapper>());
+            MoveObjectController.Instance.SelectAnObject(wrapper);
         });
         grabInteractable.selectExited.AddListener(_ =>
         {
@@ -171,14 +180,14 @@ public class TrackBuilder
         GameObject.DestroyImmediate(lastTrackPieceToReplace.gameObject);
     }
 
-    private GameObject PackSegmentInWrapper(TrackSegment track)
+    private SnappingObjWrapper PackSegmentInWrapper(TrackSegment track)
     {
         var wrapperGO = new GameObject($"Track Piece {_currTrackID++}");
         wrapperGO.transform.position = track.GetMiddleTrackPiece.transform.position;
         var wrapper = wrapperGO.AddComponent<SnappingObjWrapper>();
         track.transform.parent = wrapper.objToSnap.transform;
         wrapper.UpdateAnchors(collectAnchors: true);
-        return wrapperGO;
+        return wrapper;
     }
 
 

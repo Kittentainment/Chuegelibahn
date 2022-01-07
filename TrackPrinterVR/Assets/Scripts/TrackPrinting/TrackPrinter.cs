@@ -45,7 +45,12 @@ public class TrackPrinter : MonoBehaviour
             Debug.Log("Printing even tough not grabbed!"); // TODO maybe play a little neh-eh sound.
             return;
         }
-        draggable.PrintCurrentTrack();
+
+        if (draggable.PrintCurrentTrack() == false)
+        {
+            // TODO make an error sound or something similar to indicate printing didn't work. Probably because it was too short.
+            return;
+        }
         draggable.LetGo();
         draggable.XRGrabInteractable.enabled = false;
         draggable.XRGrabInteractable.enabled = true;

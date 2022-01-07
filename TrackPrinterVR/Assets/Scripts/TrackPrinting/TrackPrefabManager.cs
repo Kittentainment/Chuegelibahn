@@ -97,4 +97,24 @@ public class TrackPrefabManager : MonoBehaviour
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };   
     }
+
+    public static int GetMinimumNumberOfPieces(TrackType type)
+    {
+        return type switch
+        {
+            TrackType.Straight => 3,
+            TrackType.Left => 3,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+
+    public static int GetMaximumNumberOfPieces(TrackType type)
+    {
+        return type switch
+        {
+            TrackType.Straight => 50,
+            TrackType.Left => 36,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
 }

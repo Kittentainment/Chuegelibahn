@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Snapping;
+using TrackPrinting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using DebugAssert = System.Diagnostics.Debug;
@@ -151,17 +153,22 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    public void PrintCurrentTrack()
+    public SnappingObjWrapper PrintCurrentTrack()
     {
         DebugAssert.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
-        
-        currentTrackBuilder!.PrintCurrentTrack();
+
+        var newSegment = currentTrackBuilder!.PrintCurrentTrack();
+        if (newSegment == null)
+        {
+            return null;
+        }
 
         ResetPosition();
         currentState = DraggableState.Waiting;
         
         currentTrackBuilder!.DestroyYourself();
         currentTrackBuilder = null;
+        return newSegment;
     }
 
     private void ResetPosition()
