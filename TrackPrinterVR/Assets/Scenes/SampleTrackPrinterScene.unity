@@ -411,10 +411,6 @@ PrefabInstance:
       propertyPath: m_UseGravity
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8331550833040021327, guid: edfdb4edc444a4343ae2a20d0fe19300, type: 3}
-      propertyPath: m_IsKinematic
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 8356913626240789499, guid: edfdb4edc444a4343ae2a20d0fe19300, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
