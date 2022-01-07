@@ -50,7 +50,7 @@ namespace Snapping
 
         public float GetAngleBetweenUpwardVectors()
         {
-            return Vector3.Angle(OtherAnchor.UpwardVector, OtherAnchor.UpwardVector);
+            return Vector3.Angle(OwnAnchor.UpwardVector, OtherAnchor.UpwardVector);
         }
 
         public Quaternion GetUpwardRotation()
