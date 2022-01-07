@@ -187,17 +187,21 @@ public class TrackBuilder
     {
         AddSnappingPoints(segment);
         var wrapper = PackSegmentInWrapper(segment);
-        MakeInteractable(segment, wrapper);
-        MakeThrowableInTrash(wrapper);
+        var interactable = MakeInteractable(segment, wrapper);
+        MakeThrowableInTrash(wrapper, interactable);
         return wrapper;
     }
 
-    private void MakeThrowableInTrash(SnappingObjWrapper wrapper)
+    private void MakeThrowableInTrash(SnappingObjWrapper wrapper, XRGrabInteractable xrGrabInteractable)
     {
-        wrapper.gameObject.AddComponent<ThrowableInTrash>();
+        var throwableInTrash = wrapper.gameObject.AddComponent<ThrowableInTrash>();
+        xrGrabInteractable.selectExited.AddListener(arg0 =>
+        {
+            throwableInTrash.OnLetGo();
+        });
     }
 
-    private void MakeInteractable(TrackSegment trackSegment, SnappingObjWrapper wrapper)
+    private XRGrabInteractable MakeInteractable(TrackSegment trackSegment, SnappingObjWrapper wrapper)
     {
         var centerPiece = trackSegment.GetMiddleTrackPiece;
         var grabInteractable = wrapper.gameObject.AddComponent<XRGrabInteractable>();
@@ -220,6 +224,7 @@ public class TrackBuilder
             Debug.Log("Let go of an object which should now be deselected and snapped to anything if there is something near");
             MoveObjectController.Instance.DeselectObject();
         });
+        return grabInteractable;
     }
 
     /// <summary>

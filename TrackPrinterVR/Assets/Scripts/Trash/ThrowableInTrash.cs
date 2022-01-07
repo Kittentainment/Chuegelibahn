@@ -5,12 +5,20 @@ using UnityEngine;
 
 public class ThrowableInTrash : MonoBehaviour
 {
+    public bool IsInTrashCan { get; private set; }
+
+    public void OnLetGo()
+    {
+        if (!IsInTrashCan) return;
+        GetComponent<Rigidbody>().isKinematic = false;
+        GetComponent<Rigidbody>().useGravity = true;
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Trashcan"))
         {
-            GetComponent<Rigidbody>().isKinematic = false;
-            GetComponent<Rigidbody>().useGravity = true;
+            IsInTrashCan = true;
         }
 
         if (other.CompareTag("TrashFire"))
@@ -22,8 +30,7 @@ public class ThrowableInTrash : MonoBehaviour
     {
         if (other.CompareTag("Trashcan"))
         {
-            GetComponent<Rigidbody>().isKinematic = true;
-            GetComponent<Rigidbody>().useGravity = false;
+            IsInTrashCan = false;
         }
     }
 }
