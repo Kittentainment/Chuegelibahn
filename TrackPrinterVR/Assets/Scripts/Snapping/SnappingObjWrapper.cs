@@ -259,7 +259,8 @@ namespace Snapping
         private void UpdateCurrentSnapping()
         {
             var wasSnappingBefore = IsSnapping;
-            var snappingAnchorBefore = CurrentSnapping?.OtherAnchor;
+            var otherSnappingAnchorBefore = CurrentSnapping?.OtherAnchor;
+            var ownSnappingAnchorBefore = CurrentSnapping?.OwnAnchor;
 
             CurrentSnapping = GetNearestSnapping();
 
@@ -288,7 +289,7 @@ namespace Snapping
 
             // We found a snapping
             // Debug.Log($"Found Snapping: {CurrentSnapping}");
-            if (!wasSnappingBefore || snappingAnchorBefore != CurrentSnapping.OtherAnchor)
+            if (!wasSnappingBefore || otherSnappingAnchorBefore != CurrentSnapping.OtherAnchor || ownSnappingAnchorBefore != CurrentSnapping.OwnAnchor)
             {
                 // It's a new snapping! Create a preview object if we use previews and set it to the correct position.
                 if (UseSnappingPreviews)
