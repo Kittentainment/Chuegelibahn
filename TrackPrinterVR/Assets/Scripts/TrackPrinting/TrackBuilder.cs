@@ -52,7 +52,7 @@ public class TrackBuilder
         var numberOfNeededElements = type switch
         {
             TrackType.Straight => Mathf.RoundToInt(distance / pieceLength),
-            TrackType.Left => Mathf.RoundToInt(GetActualAngle(horizontalAngle) / TrackPrefabManager.GetRotationOfTrackPiece(type)),
+            TrackType.Left => Mathf.RoundToInt(GetActualAngle(horizontalAngle) / TrackPrefabManager.GetRotationOfTrackPiece(type)) + 2,
             _ => throw new ArgumentOutOfRangeException()
         };
         if (numberOfNeededElements <= 0)
@@ -61,7 +61,7 @@ public class TrackBuilder
             return;
         }
 
-        numberOfNeededElements += 1; // Because they are rounded down. But if there should be none it should stay none
+        // numberOfNeededElements += 1; // Because they are rounded down. But if there should be none it should stay none
         
         if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
         {
@@ -91,11 +91,12 @@ public class TrackBuilder
     /// <returns></returns>
     private float GetActualAngle(float angle)
     {
+        var step = 15;
         if (angle >= 0 && angle < 90)
             return 180;
         if (angle >= 90)
             return 0;
-        return angle + 180;
+        return Mathf.RoundToInt(angle / step) * step + 180;
     }
 
     /// <summary>

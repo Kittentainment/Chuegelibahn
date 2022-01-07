@@ -125,7 +125,7 @@ public class TrackPrefabManager : MonoBehaviour
         return type switch
         {
             TrackType.Straight => 50,
-            TrackType.Left => 40,
+            TrackType.Left => 38,
             _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
         };
     }
