@@ -1,11 +1,13 @@
 using UnityEngine;
 
-namespace ExtensionMethods;
-
-public static class VectorExtensions
+namespace ExtensionMethods
 {
-    public static Vector3 RotateAround(this Vector3 vector, Vector3 axis, float angle)
+
+    public static class VectorExtensions
     {
-        return Quaternion.AngleAxis(angle, axis) * vector;
+        public static Vector3 RotateAround(this Vector3 vector, Vector3 axis, float angle)
+        {
+            return Quaternion.AngleAxis(angle, axis) * vector;
+        }
     }
 }
