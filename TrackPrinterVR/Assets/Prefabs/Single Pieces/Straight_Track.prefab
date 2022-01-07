@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7345397284214434331}
   - component: {fileID: 7345397284214434329}
   - component: {fileID: 7345397284214434330}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -133,7 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7096176117530561550}
   - component: {fileID: 3828201489064857031}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Straight_Track
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -167,3 +167,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6660802ddba4eec826b9c34f9d7804, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _type: 0
