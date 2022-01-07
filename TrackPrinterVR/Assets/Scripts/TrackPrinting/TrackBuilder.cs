@@ -47,8 +47,14 @@ public class TrackBuilder
         var outputDirection = trackPrinter.forward;
         var upwardsDirection = trackPrinter.up;
         var distance = Vector3.Dot(drawLine, outputDirection);
+        var angle = Vector3.SignedAngle(outputDirection, draggable.forward, upwardsDirection);
         var pieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
-        var numberOfNeededElements = Mathf.RoundToInt(distance / pieceLength) + 1;
+        var numberOfNeededElements = type switch
+        {
+            TrackType.Straight => Mathf.RoundToInt(distance / pieceLength) + 1,
+            TrackType.Left => Mathf.RoundToInt(angle < 0 ? (angle < -90 ? 180 : 0) : angle / TrackPrefabManager.GetRotationOfTrackPiece(type)) + 1,
+            _ => throw new ArgumentOutOfRangeException()
+        };
         
         // TODO add max number of elements
         if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
