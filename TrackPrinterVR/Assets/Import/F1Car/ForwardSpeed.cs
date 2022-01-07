@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ForwardSpeed : MonoBehaviour
 {
+    [SerializeField] private int Speedfactor;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +15,6 @@ public class ForwardSpeed : MonoBehaviour
     private void FixedUpdate()
     {
         
-        this.GetComponent<Rigidbody>().AddForce(-(transform.right), ForceMode.Force);
+        this.GetComponent<Rigidbody>().AddForce(-(transform.right) * (Time.deltaTime * Speedfactor), ForceMode.Force);
     }
 }
