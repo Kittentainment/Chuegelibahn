@@ -2,6 +2,7 @@ using System;
 using ExtensionMethods;
 using Moving;
 using Snapping;
+using TMPro;
 using TrackPrinting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -90,7 +91,12 @@ public class TrackBuilder
         var singlePieceRotation = TrackPrefabManager.GetRotationOfTrackPiece(type);
         for (var i = 0; i < numberOfElements; i++)
         {
-            var trackPiece = GameObject.Instantiate(prefabManager.GetPieceOfType(type), _trackBuilderSegment.transform);
+            TrackPiece original;
+            if (i == 0 || i == numberOfElements - 1)
+                original = prefabManager.GetTrackPrefabsForType(type).EndPieces;
+            else
+                original = prefabManager.GetTrackPrefabsForType(type).Middle;
+            var trackPiece = GameObject.Instantiate(original, _trackBuilderSegment.transform);
             trackPiece.name = $"New TrackPiece {i}";
             var position = type switch {
                 TrackType.Straight => _trackBuilderSegment.transform.position + i * singlePieceLength * outputDirection,
@@ -164,12 +170,12 @@ public class TrackBuilder
         var lastTrackPieceToReplace = track.trackPieces[track.trackPieces.Count - 1];
         var lastTrackPieceToReplaceTF = lastTrackPieceToReplace.transform;
 
-        var firstTpNew = GameObject.Instantiate(trackPiecePrefabs.first);
+        var firstTpNew = GameObject.Instantiate(trackPiecePrefabs.First);
         firstTpNew.transform.position = firstTrackPieceToReplaceTF.position;
         firstTpNew.transform.rotation = firstTrackPieceToReplaceTF.rotation;
         firstTpNew.transform.parent = track.transform;
         
-        var lastTpNew = GameObject.Instantiate(trackPiecePrefabs.last);
+        var lastTpNew = GameObject.Instantiate(trackPiecePrefabs.Last);
         lastTpNew.transform.position = lastTrackPieceToReplaceTF.position;
         lastTpNew.transform.rotation = lastTrackPieceToReplaceTF.rotation;
         lastTpNew.transform.parent = track.transform;

@@ -2,21 +2,21 @@ namespace TrackPrinting
 {
     public struct TrackPiecePrefabs
     {
-        public TrackType type { get; }
-        public TrackPiece first { get; }
-        public TrackPiece last { get; }
+        public TrackType Type { get; }
+        public TrackPiece First { get; }
+        public TrackPiece Last { get; }
         
-        public TrackPiece ends { get; }
+        public TrackPiece EndPieces { get; }
         
-        public TrackPiece middle { get; }
+        public TrackPiece Middle { get; }
 
-        public TrackPiecePrefabs(TrackType type, TrackPiece first, TrackPiece last, TrackPiece middle, TrackPiece ends)
+        public TrackPiecePrefabs(TrackType type, TrackPiece first, TrackPiece last, TrackPiece middle, TrackPiece endPieces)
         {
-            this.type = type;
-            this.first = first;
-            this.last = last;
-            this.middle = middle;
-            this.ends = ends;
+            this.Type = type;
+            this.First = first;
+            this.Last = last;
+            this.Middle = middle;
+            this.EndPieces = endPieces;
         }
     }
 }
