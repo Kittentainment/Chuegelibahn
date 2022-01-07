@@ -52,10 +52,6 @@ namespace Snapping
                 {
                     Destroy(_currentSnappingPreviewGO);
                 }
-                if (value == null && _currentSnappingPreviewGO != null)
-                {
-                    Destroy(_currentSnappingPreviewGO);
-                }
                 _currentSnappingPreviewGO = value;
             }
         }
@@ -224,18 +220,37 @@ namespace Snapping
                 return;
             }
 
+            // if (!wasSnappingBefore)
+            // {
+            //     // It is a new snapping! update the preview.
+            //     
+            // }
+            // else
+            // {
+            //     // It is an old snapping. The preview should not update, if we used 
+            // }
+
             // We found a snapping
             Debug.Log($"Found Snapping: {CurrentSnapping}");
-            if (!wasSnappingBefore || snappingAnchorBefore == CurrentSnapping.OtherAnchor)
+            if (!wasSnappingBefore || snappingAnchorBefore != CurrentSnapping.OtherAnchor)
             {
-                // It's a new snapping! Create a preview object if we use previews.
+                // It's a new snapping! Create a preview object if we use previews and set it to the correct position.
                 if (UseSnappingPreviews)
                 {
                     CurrentSnappingPreviewGO = objToSnap.CreateSnappingPreviewObject(this.transform);
                 }
+                SnapToCurrentSnappingPosition();
+            }
+            else
+            {
+                if (!UseSnappingPreviews)
+                {
+                    // If we use a preview, we don't have to update it all the time.
+                    SnapToCurrentSnappingPosition();
+                }
             }
 
-            SnapToCurrentSnappingPosition();
+            
         }
 
         private SnappingResult GetNearestSnapping()

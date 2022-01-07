@@ -22,7 +22,7 @@ namespace Snapping
         /// </summary>
         public GameObject CreateSnappingPreviewObject(Transform parentTransform)
         {
-            var previewGO = Instantiate(gameObject, parentTransform, true);
+            var previewGO = Instantiate(gameObject, null, true);
             previewGO.GetComponent<ObjToSnap>().enabled = false;
             var previewMaterial = CreatePreviewMaterial();
             foreach (var meshRenderer in previewGO.GetComponentsInChildren<MeshRenderer>())
