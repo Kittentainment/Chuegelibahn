@@ -90,7 +90,7 @@ public class TrackBuilder
         var singlePieceRotation = TrackPrefabManager.GetRotationOfTrackPiece(type);
         for (var i = 0; i < numberOfElements; i++)
         {
-            var trackPiece = GameObject.Instantiate(prefabManager.StraightPiece, _trackBuilderSegment.transform);
+            var trackPiece = GameObject.Instantiate(prefabManager.GetPieceOfType(type), _trackBuilderSegment.transform);
             trackPiece.name = $"New TrackPiece {i}";
             var position = type switch {
                 TrackType.Straight => _trackBuilderSegment.transform.position + i * singlePieceLength * outputDirection,

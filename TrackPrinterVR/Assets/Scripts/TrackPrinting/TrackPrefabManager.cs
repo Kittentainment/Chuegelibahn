@@ -37,6 +37,18 @@ public class TrackPrefabManager : MonoBehaviour
         instance = this;
     }
 
+
+    public TrackPiece GetPieceOfType(TrackType type)
+    {
+        return type switch
+        {
+            TrackType.Straight => StraightPiece,
+            TrackType.Left => CurvePiece,
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
+    }
+    
+
     /// <summary>
     /// The distance from the previous track piece to the next one if put together.
     /// </summary>
