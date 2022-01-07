@@ -38,6 +38,13 @@ namespace Snapping
             return OtherAnchor.AnchorPosition - OwnAnchor.AnchorPosition;
         }
 
+        public Quaternion GetTotalRotation()
+        {
+            var goalRotation = Quaternion.LookRotation(OtherAnchor.ForwardVector * -1, OtherAnchor.UpwardVector);
+            // var startRotation = Quaternion.LookRotation(OwnAnchor.ForwardVector, OwnAnchor.UpwardVector);
+            return goalRotation;
+        }
+
         public Quaternion GetForwardRotation()
         {
             return Quaternion.FromToRotation(OwnAnchor.ForwardVector, OtherAnchor.ForwardVector * -1);

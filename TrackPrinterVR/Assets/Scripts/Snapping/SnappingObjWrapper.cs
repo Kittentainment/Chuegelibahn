@@ -174,11 +174,13 @@ namespace Snapping
         {
             Debug.Log("ApplySnappingToTransform");
             var movementVector = snappingResult.GetMovementVector();
-            var forwardRotation = snappingResult.GetForwardRotation();
             transform.Translate(movementVector, Space.World);
-            RotateAround(transform, snappingResult.OtherAnchor.transform.position, forwardRotation);
-            var upwardAngle = snappingResult.GetAngleBetweenUpwardVectors();
-            transform.Rotate(snappingResult.GetForwardDirectionOwnAnchor(), upwardAngle);
+            transform.rotation = snappingResult.GetTotalRotation();
+            // var forwardRotation = snappingResult.GetForwardRotation();
+            // RotateAround(transform, snappingResult.OtherAnchor.transform.position, forwardRotation);
+            // var upwardAngle = snappingResult.GetAngleBetweenUpwardVectors();
+            //
+            // transform.Rotate(snappingResult.GetForwardDirectionOwnAnchor(), upwardAngle);
             // var upwardRotation = snappingResult.GetUpwardRotation();
             // RotateAround(transform, snappingResult.OtherAnchor.transform.position, upwardRotation);
             // transform.localRotation = rotation;
