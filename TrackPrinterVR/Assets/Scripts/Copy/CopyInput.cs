@@ -41,6 +41,12 @@ namespace Copy
 
         private void LetGoWhileInCopyArea(SelectExitEventArgs args)
         {
+            if (currentCopyObject != null)
+            {
+                Debug.Log("Added a second Copyable into the CopyInput. Ignored.");
+                return;
+            }
+            
             var copyable = args.interactableObject.transform.gameObject.GetComponent<Copyable>();
             
             currentCopyObject = copyable;
@@ -55,8 +61,12 @@ namespace Copy
         {
             var copyable = args.interactableObject.transform.gameObject.GetComponent<Copyable>();
             if (copyable != currentCopyObject)
-                Debug.LogWarning("Somehow another Copyable was removed from the CopyInput than was stored in the CopyInput");
-            
+            {
+                Debug.LogWarning(
+                    "Somehow another Copyable was removed from the CopyInput than was stored in the CopyInput. Ignored.");
+                return;
+            }
+
             currentCopyObject = null;
             copyable.currentCopyInput = null;
             copyable.GrabbedWhileInCopyArea(args);
