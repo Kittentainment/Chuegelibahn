@@ -12,10 +12,10 @@ namespace Copy
     {
         private const float RotationSpeedWhileTarget = 360f / 4;
 
-        // /// <summary>
-        // /// If true, the object will have a preview look. Currently not possible to switch back to the old material.
-        // /// </summary>
-        // [SerializeField] private bool usePreviewMaterial = true;
+        /// <summary>
+        /// If true, the object will have a preview look.
+        /// </summary>
+        [SerializeField] private bool usePreviewMaterial = true;
         
         public XRGrabInteractable grabInteractable { get; private set; }
         
@@ -54,24 +54,27 @@ namespace Copy
         
         private void OnBecameCopyOutput()
         {
-            // if (usePreviewMaterial)
-            // {
-            //     var previewMaterial = CreatePreviewMaterial();
-            //     var children = GetComponentsInChildren<MeshRenderer>();
-            //     for (var i = 0; i < children.Length; i++)
-            //     {
-            //         var meshRenderer = children[i];
-            //         meshRenderer.material = previewMaterial;
-            //     }
-            // }
+            if (usePreviewMaterial)
+            {
+                var previewMaterial = GetPreviewMaterial();
+                foreach (var meshRenderer in GetComponentsInChildren<MeshRenderer>())
+                {
+                    var materialSwitcher = meshRenderer.gameObject.AddComponent<MaterialSwitcher>();
+                    materialSwitcher.SwitchToNewMaterial(previewMaterial);
+                }
+            }
         }
 
         private void OnStoppedBeingCopyOutput()
         {
-            
+            foreach (var materialSwitcher in GetComponentsInChildren<MaterialSwitcher>())
+            {
+                materialSwitcher.SwitchBack();
+                Destroy(materialSwitcher);
+            }
         }
         
-        private Material CreatePreviewMaterial()
+        private Material GetPreviewMaterial()
         {
             var previewMat = Resources.LoadAll("Materials", typeof(Material))
                 .Cast<Material>()
@@ -81,12 +84,13 @@ namespace Copy
         
         protected internal void LetGoWhileInCopyArea(SelectExitEventArgs args)
         {
+            // Once a Copyable was let go in the copy area, it becomes the copy target.
             transform.SetPositionAndRotation(currentCopyInput!.transform.position, Quaternion.identity);
         }
 
         internal void GrabbedWhileInCopyArea(SelectEnterEventArgs args)
         {
-            
+            // Once a copy target was let go in the copy area, it becomes the copy target.
         }
         
 
