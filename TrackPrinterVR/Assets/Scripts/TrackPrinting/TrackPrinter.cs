@@ -50,7 +50,7 @@ public class TrackPrinter : MonoBehaviour
             return;
         }
 
-        if (draggable.PrintCurrentTrack() == false)
+        if (draggable.PrintCurrentTrack() == null)
         {
             // TODO make an error sound or something similar to indicate printing didn't work. Probably because it was too short.
             return;

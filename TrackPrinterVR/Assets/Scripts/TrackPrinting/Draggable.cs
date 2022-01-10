@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Snapping;
 using TrackPrinting;
 using UnityEngine;
@@ -137,7 +138,7 @@ public class Draggable : MonoBehaviour
     {
         if (!isGrabbed) Debug.LogWarning("Has to be Grabbed to let go");
         
-        // TODO move Draggable to the point in front of the current track, to always retract it at the same speed.
+        // (TODO maybe move Draggable to the point in front of the current track, to always retract it at the same speed.)
 
         currentState = DraggableState.Retracting;
     }
@@ -145,7 +146,6 @@ public class Draggable : MonoBehaviour
 
     public void DragToLocation(Vector3 newLocation)
     {
-        // TODO Add max distance (maybe or just max elements in the TrackBuilder)
         DebugAssert.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
 
         transform.position = newLocation;
@@ -159,7 +159,7 @@ public class Draggable : MonoBehaviour
         }
     }
 
-    public SnappingObjWrapper PrintCurrentTrack()
+    public SnappingObjWrapper? PrintCurrentTrack()
     {
         DebugAssert.Assert(trackPrinter != null, nameof(trackPrinter) + " != null");
 
@@ -169,8 +169,8 @@ public class Draggable : MonoBehaviour
             return null;
         }
 
-        ResetPosition();
-        currentState = DraggableState.Waiting;
+        // ResetPosition();
+        currentState = DraggableState.Retracting;
         
         currentTrackBuilder!.DestroyYourself();
         currentTrackBuilder = null;
