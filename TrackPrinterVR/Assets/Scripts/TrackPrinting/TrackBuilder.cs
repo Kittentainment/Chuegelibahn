@@ -1,4 +1,5 @@
 using System;
+using Copy;
 using ExtensionMethods;
 using Moving;
 using Snapping;
@@ -189,7 +190,13 @@ public class TrackBuilder
         var wrapper = PackSegmentInWrapper(segment);
         var interactable = MakeInteractable(segment, wrapper);
         MakeThrowableInTrash(wrapper, interactable);
+        MakeCopyable(wrapper);
         return wrapper;
+    }
+
+    private void MakeCopyable(SnappingObjWrapper wrapper)
+    {
+        wrapper.gameObject.AddComponent<Copyable>();
     }
 
     private void MakeThrowableInTrash(SnappingObjWrapper wrapper, XRGrabInteractable xrGrabInteractable)
