@@ -19,7 +19,7 @@ namespace Copy
 
         private void OnTriggerEnter(Collider other)
         {
-            var copyable = other.GetComponent<Copyable>();
+            var copyable = other.GetComponentInParent<Copyable>();
             if (copyable == null) return;
 
             Debug.Log("Printer Input Area Entered");
@@ -31,7 +31,7 @@ namespace Copy
 
         private void OnTriggerExit(Collider other)
         {
-            var copyable = other.GetComponent<Copyable>();
+            var copyable = other.GetComponentInParent<Copyable>();
             if (copyable == null) return;
             
             Debug.Log("Printer Input Area Left");
