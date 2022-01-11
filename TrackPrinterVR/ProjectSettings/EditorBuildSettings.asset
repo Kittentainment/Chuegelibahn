@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/SceneWithLandscape.unity
+    guid: fdf8fcc323cf5467c88ff923877aea6f
+  - enabled: 0
+    path: Assets/Scenes/SampleTrackPrinterScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3cd82ea44e5644b929ea46ce053c2652, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 32cf7a7ffe3a8429f8b4bbcfcd0b5920, type: 2}
