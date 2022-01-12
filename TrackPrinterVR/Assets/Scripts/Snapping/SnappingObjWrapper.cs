@@ -18,8 +18,8 @@ namespace Snapping
         public static bool UseSnappingPreviews { get; set; } = true;
 
         #endregion
-
-
+        
+        
         private readonly List<Anchor> _anchors = new List<Anchor>();
 
         public ObjToSnap objToSnap { get; private set; }
@@ -84,6 +84,36 @@ namespace Snapping
             {
                 UpdateCurrentSnapping();
             }
+        }
+        
+        /// <summary>
+        /// Add Events for when this SnappingObjectWrapper is grabbed via XR Controllers, so the XR Grab Interactable informs
+        /// our <code>MoveObjectController</code>
+        /// </summary>
+        /// <param name="grabInteractable">The XRGrabInteractable on this component.</param>
+        public void AddGrabListeners([CanBeNull] XRGrabInteractable grabInteractable = null)
+        {
+            Debug.Log("AddGrabListeners");
+            grabInteractable ??= GetComponent<XRGrabInteractable>();
+            if (grabInteractable == null)
+            {
+                Debug.Log("SnappingObjWrapper::AddGrabListeners - No grab interactable found.");
+                // If we want something to snap to which should not be gradable.
+                return;
+            }
+            
+            // Events for when a piece is interacted with:
+            grabInteractable.selectEntered.AddListener(_ =>
+            {
+                Debug.Log("Grabbed a Segment which should now be selected and snapping to other segments.");
+                MoveObjectController.Instance.SelectAnObject(this);
+            });
+            grabInteractable.selectExited.AddListener(_ =>
+            {
+                Debug.Log(
+                    "Let go of an object which should now be deselected and snapped to anything if there is something near");
+                MoveObjectController.Instance.DeselectObject();
+            });
         }
         
         /// <summary>
