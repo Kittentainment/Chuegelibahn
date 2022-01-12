@@ -12,5 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleTrackPrinterScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects:
+    Unity.XR.Oculus.Settings: {fileID: 11400000, guid: 6249d3801538941da831956c8110108d, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3cd82ea44e5644b929ea46ce053c2652, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 32cf7a7ffe3a8429f8b4bbcfcd0b5920, type: 2}
