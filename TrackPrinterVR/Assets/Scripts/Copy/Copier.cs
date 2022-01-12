@@ -36,12 +36,13 @@ namespace Copy
             {
                 Debug.LogWarning("Copier::OnCopyableRemoved the removed object was not stored");
             }
-            _copyOutputLocation.RemoveCopyOutput(false);
+            _copyOutputLocation.RemoveCopyOutput(true);
         }
 
         private void OnCopyOutputGrabbed(SelectEnterEventArgs args)
         {
             Debug.Log("OnCopyOutputGrabbed");
+            _copyOutputLocation.RemoveCopyOutput(false);
             var copyable = args.interactableObject.transform.GetComponent<Copyable>();
             copyable.grabInteractable.selectEntered.RemoveListener(OnCopyOutputGrabbed);
             copyable.currentCopyOutputLocation = null;
