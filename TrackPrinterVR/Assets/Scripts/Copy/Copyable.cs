@@ -39,9 +39,15 @@ namespace Copy
         private bool isCopyOutput => currentCopyOutputLocation != null;
         
 
+        private void Awake()
+        {
+            Debug.Log("Copyable::Awake");
+            grabInteractable = GetComponentInChildren<XRGrabInteractable>();
+        }
+
         private void Start()
         {
-            grabInteractable = GetComponentInChildren<XRGrabInteractable>();
+            Debug.Log("Copyable::Awake");
         }
 
         private void FixedUpdate()
