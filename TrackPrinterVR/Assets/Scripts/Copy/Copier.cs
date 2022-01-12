@@ -36,6 +36,7 @@ namespace Copy
 
         private void OnCopyOutputGrabbed(SelectEnterEventArgs args)
         {
+            Debug.Log("OnCopyOutputGrabbed");
             var copyable = args.interactableObject.transform.GetComponent<Copyable>();
             copyable.grabInteractable.selectEntered.RemoveListener(OnCopyOutputGrabbed);
             copyable.currentCopyOutputLocation = null;
