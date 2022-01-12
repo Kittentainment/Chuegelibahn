@@ -31,9 +31,7 @@ public class MaterialSwitcher : MonoBehaviour
             Debug.LogWarning("MaterialSwitcher::SwitchBack - nothing to switch to!");
             return;
         }
-
-        Debug.Log("switched material");
-
+        
         meshRenderer.material = oldMaterial;
     }
     

@@ -26,6 +26,8 @@ namespace Copy
         /// </summary>
         public void RemoveCopyOutput(bool destroy = false)
         {
+            Debug.Log("RemoveCopyOutput");
+            Debug.Log("destroy = " + destroy);
             if (destroy)
             {
                 Destroy(currentOutput);
