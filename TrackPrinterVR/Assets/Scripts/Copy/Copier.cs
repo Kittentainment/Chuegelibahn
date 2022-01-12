@@ -22,11 +22,16 @@ namespace Copy
             var copyableCopy = copyGO.GetComponent<Copyable>();
             copyableCopy.currentCopyOutputLocation = _copyOutputLocation;
             copyableCopy.grabInteractable.selectEntered.AddListener(OnCopyOutputGrabbed);
+            _copyOutputLocation.currentOutput = copyableCopy;
         }
 
         public void OnCopyableRemoved(Copyable copyable)
         {
-            
+            if (_copyOutputLocation.currentOutput != copyable)
+            {
+                Debug.LogWarning("Copier::OnCopyableRemoved the removed object was not stored");
+            }
+            _copyOutputLocation.currentOutput = null;
         }
 
         private void OnCopyOutputGrabbed(SelectEnterEventArgs args)

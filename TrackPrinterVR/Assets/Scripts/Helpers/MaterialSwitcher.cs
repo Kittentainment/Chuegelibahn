@@ -32,6 +32,8 @@ public class MaterialSwitcher : MonoBehaviour
             return;
         }
 
+        Debug.Log("switched material");
+
         meshRenderer.material = oldMaterial;
     }
     

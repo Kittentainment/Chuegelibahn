@@ -22,7 +22,7 @@ namespace Copy
             var copyable = other.GetComponentInParent<Copyable>();
             if (copyable == null) return;
 
-            Debug.Log("Printer Input Area Entered");
+            // Debug.Log("Printer Input Area Entered");
             if (copyable.grabInteractable.isSelected)
             {
                 copyable.grabInteractable.selectExited.AddListener(LetGoWhileInCopyArea);
@@ -34,7 +34,7 @@ namespace Copy
             var copyable = other.GetComponentInParent<Copyable>();
             if (copyable == null) return;
             
-            Debug.Log("Printer Input Area Left");
+            // Debug.Log("Printer Input Area Left");
 
             copyable.grabInteractable.selectExited.RemoveListener(LetGoWhileInCopyArea);
         }
