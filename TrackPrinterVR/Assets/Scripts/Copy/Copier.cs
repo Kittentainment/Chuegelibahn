@@ -28,7 +28,7 @@ namespace Copy
             var copyableCopy = copyGO.GetComponent<Copyable>();
             copyableCopy.currentCopyOutputLocation = _copyOutputLocation;
             copyableCopy.grabInteractable.selectEntered.AddListener(OnCopyOutputGrabbed);
-            HandleSpecialCases(copyable);
+            HandleSpecialCopyCases(copyable);
             _copyOutputLocation.AddNewCopyOutput(copyableCopy);
         }
 
@@ -36,7 +36,7 @@ namespace Copy
         /// Some kind of objects need additional code for copying them. For example Listeners are not copied on Instantiate().
         /// </summary>
         /// <param name="copyable">The Copyable which has just been copied via Instantiate() and might need special handling</param>
-        private void HandleSpecialCases(Copyable copyable)
+        private void HandleSpecialCopyCases(Copyable copyable)
         {
             var snappingObjWrapper = copyable.GetComponent<SnappingObjWrapper>();
             if (snappingObjWrapper != null)

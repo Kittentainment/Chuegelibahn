@@ -28,9 +28,9 @@ namespace Copy
         {
             Debug.Log("RemoveCopyOutput");
             Debug.Log("destroy = " + destroy);
-            if (destroy)
+            if (destroy && currentOutput != null)
             {
-                Destroy(currentOutput);
+                Destroy(currentOutput.gameObject);
             }
             currentOutput = null;
         }
