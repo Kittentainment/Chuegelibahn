@@ -50,23 +50,11 @@ public class TrackBuilder
         var distance = Vector3.Dot(drawLine, outputDirection);
         var horizontalAngle = Vector3.SignedAngle(outputDirection, draggable.forward, upwardsDirection);
         var pieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
-        var numberOfNeededElements = type switch
-        {
-            TrackType.Straight => Mathf.RoundToInt(distance / pieceLength),
-            TrackType.Left => Mathf.RoundToInt(GetActualAngle(horizontalAngle) / TrackPrefabManager.GetRotationOfTrackPiece(type)) + 2,
-            _ => throw new ArgumentOutOfRangeException()
-        };
+        var numberOfNeededElements = CalculateNumberOfNeededElements(distance, pieceLength, horizontalAngle);
         if (numberOfNeededElements <= 0)
         {
             DeleteTrackPreview();
             return;
-        }
-
-        // numberOfNeededElements += 1; // Because they are rounded down. But if there should be none it should stay none
-        
-        if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
-        {
-            numberOfNeededElements = TrackPrefabManager.GetMaximumNumberOfPieces(type);
         }
 
         // if (numberOfNeededElements != _lastNumberOfElements) // TODO We Can't really check for that, as we also need to account for rotation changes of the Track Printer, and in VR this probably happens constantly. But it's helpful for Debug,
@@ -83,6 +71,23 @@ public class TrackBuilder
         //     // _draggable.LetGo(); // DEBUG only for testing
         //     // _draggable.trackPrinter!.PrintCurrentTrack(); // DEBUG only for testing
         // }
+    }
+
+    private int CalculateNumberOfNeededElements(float distance, float pieceLength, float horizontalAngle)
+    {
+        var numberOfNeededElements = type switch
+        {
+            TrackType.Straight => Mathf.RoundToInt(distance / pieceLength),
+            TrackType.Left => Mathf.RoundToInt(GetActualAngle(horizontalAngle) / TrackPrefabManager.GetRotationOfTrackPiece(type)) + 2,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        
+        if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
+        {
+            numberOfNeededElements = TrackPrefabManager.GetMaximumNumberOfPieces(type);
+        }
+
+        return numberOfNeededElements;
     }
 
     /// <summary>
