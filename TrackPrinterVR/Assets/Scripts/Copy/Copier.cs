@@ -17,21 +17,26 @@ namespace Copy
 
         public void OnCopyableAdded(Copyable copyable)
         {
+            CreateCopyPreview(copyable);
+        }
+
+        private void CreateCopyPreview(Copyable copyable)
+        {
             var copyGO = Instantiate(copyable.gameObject);
             copyGO.transform.position = _copyOutputLocation.transform.position;
             var copyableCopy = copyGO.GetComponent<Copyable>();
             copyableCopy.currentCopyOutputLocation = _copyOutputLocation;
             copyableCopy.grabInteractable.selectEntered.AddListener(OnCopyOutputGrabbed);
-            _copyOutputLocation.currentOutput = copyableCopy;
+            _copyOutputLocation.AddNewCopyOutput(copyableCopy);
         }
 
-        public void OnCopyableRemoved(Copyable copyable)
+        public void OnCopyableInputRemoved(Copyable copyable)
         {
             if (_copyOutputLocation.currentOutput != copyable)
             {
                 Debug.LogWarning("Copier::OnCopyableRemoved the removed object was not stored");
             }
-            _copyOutputLocation.currentOutput = null;
+            _copyOutputLocation.RemoveCopyOutput(false);
         }
 
         private void OnCopyOutputGrabbed(SelectEnterEventArgs args)
@@ -40,6 +45,7 @@ namespace Copy
             var copyable = args.interactableObject.transform.GetComponent<Copyable>();
             copyable.grabInteractable.selectEntered.RemoveListener(OnCopyOutputGrabbed);
             copyable.currentCopyOutputLocation = null;
+            CreateCopyPreview(_copyInput.currentCopyObject);
         }
     }
 }

@@ -45,11 +45,6 @@ namespace Copy
             grabInteractable = GetComponentInChildren<XRGrabInteractable>();
         }
 
-        private void Start()
-        {
-            Debug.Log("Copyable::Awake");
-        }
-
         private void FixedUpdate()
         {
             if (isCopyOutput)
@@ -91,7 +86,7 @@ namespace Copy
         protected internal void LetGoWhileInCopyArea(SelectExitEventArgs args)
         {
             // Once a Copyable was let go in the copy area, it becomes the copy target.
-            transform.SetPositionAndRotation(currentCopyInput!.transform.position, Quaternion.identity);
+            transform.SetPositionAndRotation(currentCopyInput!.transform.position, Quaternion.Euler(Vector3.zero));
         }
 
         internal void GrabbedWhileInCopyArea(SelectEnterEventArgs args)

@@ -72,7 +72,7 @@ namespace Copy
             copyable.GrabbedWhileInCopyArea(args);
             args.interactableObject.selectEntered.RemoveListener(GrabbedWhileInCopyArea);
             
-            copier.OnCopyableRemoved(copyable);
+            copier.OnCopyableInputRemoved(copyable);
         }
     }
 }
