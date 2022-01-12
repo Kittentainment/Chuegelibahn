@@ -21,14 +21,14 @@ namespace Copy
             CreateCopyPreview(copyable);
         }
 
-        private void CreateCopyPreview(Copyable copyable)
+        private void CreateCopyPreview(Copyable copyableOriginal)
         {
-            var copyGO = Instantiate(copyable.gameObject);
+            var copyGO = Instantiate(copyableOriginal.gameObject);
             copyGO.transform.position = _copyOutputLocation.transform.position;
             var copyableCopy = copyGO.GetComponent<Copyable>();
             copyableCopy.currentCopyOutputLocation = _copyOutputLocation;
             copyableCopy.grabInteractable.selectEntered.AddListener(OnCopyOutputGrabbed);
-            HandleSpecialCopyCases(copyable);
+            HandleSpecialCopyCases(copyableCopy);
             _copyOutputLocation.AddNewCopyOutput(copyableCopy);
         }
 

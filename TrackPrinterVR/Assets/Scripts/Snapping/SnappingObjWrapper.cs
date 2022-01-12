@@ -93,9 +93,11 @@ namespace Snapping
         /// <param name="grabInteractable">The XRGrabInteractable on this component.</param>
         public void AddGrabListeners([CanBeNull] XRGrabInteractable grabInteractable = null)
         {
+            Debug.Log("AddGrabListeners");
             grabInteractable ??= GetComponent<XRGrabInteractable>();
             if (grabInteractable == null)
             {
+                Debug.Log("SnappingObjWrapper::AddGrabListeners - No grab interactable found.");
                 // If we want something to snap to which should not be gradable.
                 return;
             }
