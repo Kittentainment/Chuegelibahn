@@ -1,3 +1,4 @@
+using Snapping;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -27,7 +28,21 @@ namespace Copy
             var copyableCopy = copyGO.GetComponent<Copyable>();
             copyableCopy.currentCopyOutputLocation = _copyOutputLocation;
             copyableCopy.grabInteractable.selectEntered.AddListener(OnCopyOutputGrabbed);
+            HandleSpecialCases(copyable);
             _copyOutputLocation.AddNewCopyOutput(copyableCopy);
+        }
+
+        /// <summary>
+        /// Some kind of objects need additional code for copying them. For example Listeners are not copied on Instantiate().
+        /// </summary>
+        /// <param name="copyable">The Copyable which has just been copied via Instantiate() and might need special handling</param>
+        private void HandleSpecialCases(Copyable copyable)
+        {
+            var snappingObjWrapper = copyable.GetComponent<SnappingObjWrapper>();
+            if (snappingObjWrapper != null)
+            {
+                snappingObjWrapper.AddGrabListeners();
+            }
         }
 
         public void OnCopyableInputRemoved(Copyable copyable)

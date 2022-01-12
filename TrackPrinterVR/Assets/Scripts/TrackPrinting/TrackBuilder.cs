@@ -220,17 +220,7 @@ public class TrackBuilder
         grabInteractable.attachTransform = attachTransformGO.transform;
         grabInteractable.smoothPosition = true;
         grabInteractable.smoothRotation = true;
-        // Events for when a piece is interacted with:
-        grabInteractable.selectEntered.AddListener(_ =>
-        {
-            Debug.Log("Grabbed a Segment which should now be selected and snapping to other segments.");
-            MoveObjectController.Instance.SelectAnObject(wrapper);
-        });
-        grabInteractable.selectExited.AddListener(_ =>
-        {
-            Debug.Log("Let go of an object which should now be deselected and snapped to anything if there is something near");
-            MoveObjectController.Instance.DeselectObject();
-        });
+        wrapper.AddGrabListeners(grabInteractable);
         return grabInteractable;
     }
 
