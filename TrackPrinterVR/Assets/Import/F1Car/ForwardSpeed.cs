@@ -3,45 +3,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class ForwardSpeed : MonoBehaviour
 {
+    private int _trackLayerName;
 
     private int _trackPiecesInProximity = 0;
 
     public bool IsInTrackProximity => _trackPiecesInProximity > 0;
 
     [SerializeField] private int speedFactor = 500;
-    // Start is called before the first frame update
-    void Start()
+
+    private Rigidbody _rigidbody;
+
+    private void Awake()
     {
-        
+        _rigidbody = this.GetComponent<Rigidbody>();
+        _trackLayerName = SortingLayer.NameToID("Track");
     }
 
     private void FixedUpdate()
     {
         if (IsInTrackProximity)
         {
-            this.GetComponent<Rigidbody>().AddForce(-(transform.right) * (Time.deltaTime * speedFactor), ForceMode.Force);
+            _rigidbody.AddForce(-(transform.right) * (Time.deltaTime * speedFactor), ForceMode.Force);
         }
     }
-
-    private void OnTriggerStay(Collider other)
+    
+    private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.layer == SortingLayer.NameToID("Track"))
+        Debug.Log("Car OnTriggerEnter");
+        if (other.gameObject.layer == _trackLayerName)
         {
             _trackPiecesInProximity++;
         }
+    
+        if (_trackPiecesInProximity == 1)
+        {
+            _rigidbody.isKinematic = false;
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision other)
     {
-        if (other.gameObject.layer == SortingLayer.NameToID("Track"))
+        if (other.gameObject.layer == _trackLayerName)
         {
             if (_trackPiecesInProximity <= 0)
             {
                 throw new Exception("ForwardSpeed::OnTriggerExit - Somehow we removed more track pieces than we added. should never be minus 0;");
             }
             _trackPiecesInProximity--;
+        }
+
+        if (_trackPiecesInProximity <= 0)
+        {
+            _rigidbody.isKinematic = true;
         }
     }
 }
