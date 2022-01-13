@@ -41,36 +41,48 @@ public class ForwardSpeed : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Trigger Enter");
+        RegisterTrackPiece(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Trigger Exit");
+        DeregisterTrackPiece(other.gameObject);
     }
 
     private void OnCollisionEnter(Collision other)
     {
+        RegisterTrackPiece(other.gameObject);
+    }
+
+    private void OnCollisionExit(Collision other)
+    {
+        DeregisterTrackPiece(other.gameObject);
+    }
+
+    private void RegisterTrackPiece(GameObject other)
+    {
         Debug.Log("Car OnTriggerEnter");
-        if (other.gameObject.layer == _trackLayerName)
+        if (gameObject.layer == _trackLayerName)
         {
             _trackPiecesInProximity++;
         }
-    
+
         if (_trackPiecesInProximity == 1)
         {
             _rigidbody.isKinematic = false;
         }
     }
 
-    private void OnCollisionExit(Collision other)
+    private void DeregisterTrackPiece(GameObject other)
     {
-        if (other.gameObject.layer == _trackLayerName)
+        if (gameObject.layer == _trackLayerName)
         {
             if (_trackPiecesInProximity <= 0)
             {
-                throw new Exception("ForwardSpeed::OnTriggerExit - Somehow we removed more track pieces than we added. should never be minus 0;");
+                throw new Exception(
+                    "ForwardSpeed::OnTriggerExit - Somehow we removed more track pieces than we added. should never be minus 0;");
             }
+
             _trackPiecesInProximity--;
         }
 
