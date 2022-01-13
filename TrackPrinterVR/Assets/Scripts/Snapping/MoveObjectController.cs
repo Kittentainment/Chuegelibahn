@@ -1,9 +1,8 @@
 using System;
 using JetBrains.Annotations;
-using Snapping;
 using UnityEngine;
 
-namespace Moving
+namespace Snapping
 {
     public class MoveObjectController : MonoBehaviour
     {
