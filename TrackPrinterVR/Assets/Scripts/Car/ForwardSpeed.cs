@@ -28,7 +28,7 @@ namespace Car
             {
             
             });
-            _trackLayer = SortingLayer.NameToID("Track");
+            _trackLayer = 6; // SortingLayer.NameToID("Track");
         }
 
         private void FixedUpdate()
@@ -61,7 +61,14 @@ namespace Car
 
         private void RegisterTrackPiece(GameObject other)
         {
-            if (other.layer != _trackLayer) return;
+            if (other.layer != _trackLayer)
+            {
+               // Debug.Log("collision with others");
+                return;
+                
+            }
+
+           // Debug.Log("Registered TRACK collision");
             
             _trackPiecesInProximity++;
             if (_trackPiecesInProximity >= 1)
