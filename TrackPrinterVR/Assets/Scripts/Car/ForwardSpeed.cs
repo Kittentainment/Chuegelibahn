@@ -7,7 +7,7 @@ namespace Car
     [RequireComponent(typeof(Rigidbody))]
     public class ForwardSpeed : MonoBehaviour
     {
-        private int _trackLayerName;
+        private int _trackLayer;
 
         private int _trackPiecesInProximity = 0;
 
@@ -28,7 +28,7 @@ namespace Car
             {
             
             });
-            _trackLayerName = SortingLayer.NameToID("Track");
+            _trackLayer = SortingLayer.NameToID("Track");
         }
 
         private void FixedUpdate()
@@ -61,35 +61,32 @@ namespace Car
 
         private void RegisterTrackPiece(GameObject other)
         {
-            Debug.Log("Car OnTriggerEnter");
-            if (gameObject.layer == _trackLayerName)
-            {
-                _trackPiecesInProximity++;
-            }
-
-            if (_trackPiecesInProximity == 1)
+            if (other.layer != _trackLayer) return;
+            
+            _trackPiecesInProximity++;
+            if (_trackPiecesInProximity >= 1)
             {
                 _rigidbody.isKinematic = false;
             }
+
+
         }
 
         private void DeregisterTrackPiece(GameObject other)
         {
-            if (gameObject.layer == _trackLayerName)
+            if (other.layer != _trackLayer) return;
+            
+            if (_trackPiecesInProximity <= 0)
             {
-                if (_trackPiecesInProximity <= 0)
-                {
-                    throw new Exception(
-                        "ForwardSpeed::OnTriggerExit - Somehow we removed more track pieces than we added. should never be minus 0;");
-                }
-
-                _trackPiecesInProximity--;
+                throw new Exception(
+                    "ForwardSpeed::OnTriggerExit - Somehow we removed more track pieces than we added. should never be minus 0;");
             }
-
+            _trackPiecesInProximity--;
             if (_trackPiecesInProximity <= 0)
             {
                 _rigidbody.isKinematic = true;
             }
+
         }
     }
 }
