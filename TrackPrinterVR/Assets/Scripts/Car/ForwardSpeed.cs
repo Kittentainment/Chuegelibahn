@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(Rigidbody))]
 public class ForwardSpeed : MonoBehaviour
@@ -15,10 +16,18 @@ public class ForwardSpeed : MonoBehaviour
     [SerializeField] private int speedFactor = 500;
 
     private Rigidbody _rigidbody;
+    private XRGrabInteractable _grabInteractable;
 
     private void Awake()
     {
         _rigidbody = this.GetComponent<Rigidbody>();
+        // var collider = GetComponent<BoxCollider>();
+        
+        _grabInteractable = GetComponent<XRGrabInteractable>();
+        _grabInteractable.selectExited.AddListener(args =>
+        {
+            
+        });
         _trackLayerName = SortingLayer.NameToID("Track");
     }
 
@@ -29,7 +38,17 @@ public class ForwardSpeed : MonoBehaviour
             _rigidbody.AddForce(-(transform.right) * (Time.deltaTime * speedFactor), ForceMode.Force);
         }
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("Trigger Enter");
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("Trigger Exit");
+    }
+
     private void OnCollisionEnter(Collision other)
     {
         Debug.Log("Car OnTriggerEnter");
