@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Trashcan
   - TrashFire
+  - LeaveTrashcan
   layers:
   - Default
   - TransparentFX
