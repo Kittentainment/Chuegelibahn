@@ -1,3 +1,5 @@
+namespace TrackPrinting;
+
 public enum TrackType
 {
     Straight,

@@ -2,10 +2,10 @@ using System;
 using Copy;
 using ExtensionMethods;
 using Snapping;
-using TMPro;
-using TrackPrinting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+
+namespace TrackPrinting;
 
 public class TrackBuilder
 {

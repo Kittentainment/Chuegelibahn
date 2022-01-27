@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Input;
+using TrackPrinting;
 using UnityEngine;
 
 public class TrackPrinter : MonoBehaviour

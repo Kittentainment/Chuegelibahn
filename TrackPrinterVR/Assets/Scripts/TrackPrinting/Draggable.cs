@@ -1,13 +1,11 @@
 #nullable enable
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using JetBrains.Annotations;
 using Snapping;
-using TrackPrinting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using DebugAssert = System.Diagnostics.Debug;
+
+namespace TrackPrinting;
 
 public class Draggable : MonoBehaviour
 {

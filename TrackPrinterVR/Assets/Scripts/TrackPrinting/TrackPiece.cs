@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+namespace TrackPrinting;
 
 public class TrackPiece : MonoBehaviour
 {
