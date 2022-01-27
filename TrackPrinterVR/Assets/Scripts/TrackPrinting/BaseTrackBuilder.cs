@@ -68,7 +68,13 @@ public class BaseTrackBuilder
     }
     
 
-    public void OnDrag(Transform trackPrinter, Transform draggable)
+    /// <summary>
+    /// This method should be called, whenever there is a chance that the preview should be updated.
+    /// This will most likely be, because the <code>Draggable</code> or the <code>TrackPrinter</code> is moved.
+    /// </summary>
+    /// <param name="trackPrinter"></param>
+    /// <param name="draggable"></param>
+    public void CheckForPreviewUpdate(Transform trackPrinter, Transform draggable)
     {
         var trackPrinterPos = trackPrinter.position;
         var draggablePos = draggable.position;
@@ -84,11 +90,16 @@ public class BaseTrackBuilder
             return;
         }
 
-        // if (numberOfNeededElements != _lastNumberOfElements) // TODO We Can't really check for that, as we also need to account for rotation changes of the Track Printer, and in VR this probably happens constantly. But it's helpful for Debug,
-        // { 
+        if (numberOfNeededElements != _lastNumberOfElements) // TODO We Can't really check for that, as we also need to account for rotation changes of the Track Printer, and in VR this probably happens constantly. But it's helpful for Debug,
+        { 
             Debug.Log("numberOfNeededElements = " + numberOfNeededElements);
             UpdateTrackPreview(numberOfNeededElements, outputDirection, upwardsDirection, trackPrinter);
-        // }
+        }
+        else
+        {
+            UpdateTrackPreview(numberOfNeededElements, outputDirection, upwardsDirection, trackPrinter);
+            // TODO: replace this with logic which moves the existing preview to the new position of the track printer, (and only in case it changed).
+        }
 
         _lastNumberOfElements = numberOfNeededElements;
         UpdateLastPositions(trackPrinterPos, draggablePos);
@@ -134,8 +145,9 @@ public class BaseTrackBuilder
         return FinishTrackPiece(currentTrack);
     }
 
-    private SnappingObjWrapper FinishTrackPiece(TrackSegment segment)
+    private static SnappingObjWrapper FinishTrackPiece(TrackSegment segment)
     {
+        // TODO move this logic to a separate class or somethin
         AddSnappingPoints(segment);
         var wrapper = PackSegmentInWrapper(segment);
         var interactable = MakeInteractable(segment, wrapper);
@@ -144,12 +156,12 @@ public class BaseTrackBuilder
         return wrapper;
     }
 
-    private void MakeCopyable(SnappingObjWrapper wrapper)
+    private static void MakeCopyable(SnappingObjWrapper wrapper)
     {
         wrapper.gameObject.AddComponent<Copyable>();
     }
 
-    private void MakeThrowableInTrash(SnappingObjWrapper wrapper, XRGrabInteractable xrGrabInteractable)
+    private static void MakeThrowableInTrash(SnappingObjWrapper wrapper, XRGrabInteractable xrGrabInteractable)
     {
         var throwableInTrash = wrapper.gameObject.AddComponent<ThrowableInTrash>();
         xrGrabInteractable.selectExited.AddListener(arg0 =>
@@ -158,7 +170,7 @@ public class BaseTrackBuilder
         });
     }
 
-    private XRGrabInteractable MakeInteractable(TrackSegment trackSegment, SnappingObjWrapper wrapper)
+    private static XRGrabInteractable MakeInteractable(TrackSegment trackSegment, SnappingObjWrapper wrapper)
     {
         var centerPiece = trackSegment.GetMiddleTrackPiece;
         var grabInteractable = wrapper.gameObject.AddComponent<XRGrabInteractable>();
@@ -178,7 +190,7 @@ public class BaseTrackBuilder
     /// Replaces the TrackPieces at the ends with TrackPieces with an Anchor.
     /// </summary>
     /// <param name="track">The segment to work on.</param>
-    private void AddSnappingPoints(TrackSegment track)
+    private static void AddSnappingPoints(TrackSegment track)
     {
         var trackPiecePrefabs = prefabManager.GetTrackPrefabsForType(track.trackPieces[0].type);
         var firstTrackPieceToReplace = track.trackPieces[0];
@@ -202,7 +214,7 @@ public class BaseTrackBuilder
         GameObject.DestroyImmediate(lastTrackPieceToReplace.gameObject);
     }
 
-    private SnappingObjWrapper PackSegmentInWrapper(TrackSegment track)
+    private static SnappingObjWrapper PackSegmentInWrapper(TrackSegment track)
     {
         var wrapperGO = new GameObject($"Track Piece {_currTrackID++}");
         wrapperGO.transform.position = track.GetMiddleTrackPiece.transform.position;
