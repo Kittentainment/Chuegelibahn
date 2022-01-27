@@ -7,7 +7,10 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace TrackPrinting;
 
-public class TrackBuilder
+/// <summary>
+/// DEPRECATED
+/// </summary>
+public class TrackBuilderOld
 {
     private readonly Draggable _draggable; // TODO only used for testing
 
@@ -22,7 +25,7 @@ public class TrackBuilder
     private TrackSegment _trackBuilderSegment;
     private static TrackPrefabManager prefabManager => TrackPrefabManager.instance;
 
-    public TrackBuilder(TrackType type, Vector3 trackPrinterPos, Vector3 draggablePos, Draggable draggable)
+    public TrackBuilderOld(TrackType type, Vector3 trackPrinterPos, Vector3 draggablePos, Draggable draggable)
     {
         _draggable = draggable;
         this.type = type;
@@ -118,7 +121,7 @@ public class TrackBuilder
         var trackPrinterRotation = Quaternion.LookRotation(outputDirection, upwardsDirection);// Quaternion.FromToRotation(Vector3.forward, outputDirection); // The rotation of the TrackPrinter in WorldCoordinates.
         DeleteTrackPreview();
         _trackBuilderSegment = new GameObject("Track Segment").AddComponent<TrackSegment>();
-        _trackBuilderSegment.transform.SetPositionAndRotation(startPos + TrackPrefabManager.GetVectorFromPivotToCenterBottom(type, printerTransform), trackPrinterRotation);
+        // _trackBuilderSegment.transform.SetPositionAndRotation(startPos + TrackPrefabManager.GetVectorFromPivotToCenterBottom(type, printerTransform), trackPrinterRotation);
         var singlePieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
         var singlePieceRotation = TrackPrefabManager.GetRotationOfTrackPiece(type);
         for (var i = 0; i < numberOfElements; i++)

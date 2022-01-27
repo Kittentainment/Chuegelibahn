@@ -17,7 +17,7 @@ public class Draggable : MonoBehaviour
     
     public TrackType selectedType => trackPrinter!.SelectedType;
 
-    public TrackBuilder? currentTrackBuilder { get; private set; }
+    public TrackBuilderOld? currentTrackBuilder { get; private set; }
 
     public DraggableState currentState { get; private set; }
 
@@ -124,7 +124,7 @@ public class Draggable : MonoBehaviour
 
         if (currentTrackBuilder == null) // If we were retracting before and still have one, we can just keep it.
         {
-            currentTrackBuilder = new TrackBuilder(trackPrinter!.SelectedType, trackPrinter.transform.position, this.transform.position, this);
+            currentTrackBuilder = new TrackBuilderOld(trackPrinter!.SelectedType, trackPrinter.transform.position, this.transform.position, this);
         }
 
         transform.parent = null;
