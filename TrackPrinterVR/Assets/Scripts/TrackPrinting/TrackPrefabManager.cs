@@ -67,12 +67,12 @@ public class TrackPrefabManager : MonoBehaviour
         };
     }
 
-    public static Vector3 GetVectorFromPivotToCenterBottom(TrackType type, Transform startPos)
+    public static Vector3 GetVectorFromPivotToCenterBottom(TrackType type, Vector3 rightDirection)
     {
         return type switch
         {
-            TrackType.Straight => startPos.right * 0.05f,
-            TrackType.Left => startPos.right * 0.05f,
+            TrackType.Straight => rightDirection * 0.05f,
+            TrackType.Left => rightDirection * 0.05f,
             // TrackType.Right => Vector3.left * 0.05f,
             // TrackType.Up => Vector3.left * 0.05f,
             // TrackType.Down => Vector3.left * 0.05f,
