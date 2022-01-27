@@ -6,19 +6,38 @@ using UnityEngine;
 public class ThrowableInTrash : MonoBehaviour
 {
     public bool IsInTrashCan { get; private set; }
+    private Rigidbody rigi;
+    private int sentinel = 0;
+
+    private void Awake()
+    {
+        rigi = GetComponent<Rigidbody>();
+    }
 
     public void OnLetGo()
     {
-        if (!IsInTrashCan) return;
-        GetComponent<Rigidbody>().isKinematic = false;
-        GetComponent<Rigidbody>().useGravity = true;
+      //  Debug.Log("Let go of Object, isInTrash is: " + IsInTrashCan + "  Name of object: " + rigi.gameObject.name);
+        if (!IsInTrashCan)
+        {
+        }
+        else
+        {
+            rigi.isKinematic = false;
+            rigi.useGravity = true;
+            // Debug.Log("throwaway item is now: \nisKinematic: " + rigi.isKinematic + "\nuseGravity: " + rigi.useGravity);
+        }
     }
-    
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Trashcan"))
+        if (sentinel == 0)
         {
-            IsInTrashCan = true;
+            if (other.CompareTag("Trashcan"))
+            {
+                //Debug.Log("Set is in Trashcan to True");
+                IsInTrashCan = true;
+                sentinel++;
+            }
         }
 
         if (other.CompareTag("TrashFire"))
@@ -26,11 +45,23 @@ public class ThrowableInTrash : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Trashcan"))
+        if (other.CompareTag("LeaveTrashcan"))
         {
-            IsInTrashCan = false;
+            // Debug.Log("Hit the floor, make kinematic");
+
+            rigi.isKinematic = true;
+        }
+
+        if (sentinel != 0)
+        {
+            if (other.CompareTag("Trashcan"))
+            {
+                IsInTrashCan = false;
+                sentinel = 0;
+            }
         }
     }
 }
