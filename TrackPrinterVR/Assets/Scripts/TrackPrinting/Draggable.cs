@@ -17,7 +17,7 @@ public class Draggable : MonoBehaviour
     
     public TrackType selectedType => trackPrinter!.SelectedType;
 
-    public TrackBuilderOld? currentTrackBuilder { get; private set; }
+    public TrackBuilder? currentTrackBuilder { get; private set; }
 
     public DraggableState currentState { get; private set; }
 
@@ -97,7 +97,7 @@ public class Draggable : MonoBehaviour
             // Retract back towards the printer. (Pulling in)
             var transform = this.transform;
             transform.position += totalDistance.normalized * currMoveDistance;
-            currentTrackBuilder?.OnDrag(trackPrinter.transform, transform);
+            currentTrackBuilder?.CheckForPreviewUpdate(trackPrinter.transform, transform);
         }
     }
 
@@ -124,7 +124,7 @@ public class Draggable : MonoBehaviour
 
         if (currentTrackBuilder == null) // If we were retracting before and still have one, we can just keep it.
         {
-            currentTrackBuilder = new TrackBuilderOld(trackPrinter!.SelectedType, trackPrinter.transform.position, this.transform.position, this);
+            currentTrackBuilder = TrackBuilder.CreateTrackBuilderForType(trackPrinter!.SelectedType, trackPrinter.transform.position, this.transform.position);
         }
 
         transform.parent = null;
@@ -153,7 +153,7 @@ public class Draggable : MonoBehaviour
         }
         else
         {
-            currentTrackBuilder.OnDrag(trackPrinter!.transform, this.transform);
+            currentTrackBuilder.CheckForPreviewUpdate(trackPrinter!.transform, this.transform);
         }
     }
 

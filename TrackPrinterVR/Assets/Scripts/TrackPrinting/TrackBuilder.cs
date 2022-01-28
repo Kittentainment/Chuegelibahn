@@ -8,7 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 namespace TrackPrinting;
 
-public class BaseTrackBuilder
+public class TrackBuilder
 {
     private static int _currTrackID = 0;
 
@@ -24,7 +24,7 @@ public class BaseTrackBuilder
     private TrackSegment _trackBuilderSegment;
     private static TrackPrefabManager prefabManager => TrackPrefabManager.instance;
 
-    private BaseTrackBuilder(TrackType type, Vector3 trackPrinterPos, Vector3 draggablePos,
+    private TrackBuilder(TrackType type, Vector3 trackPrinterPos, Vector3 draggablePos,
         NumberOfElementsCalcComponent numOfElemCalcComponent,
         TrackSegmentCreatorComponent trackSegmentCreatorComponent)
     {
@@ -38,20 +38,20 @@ public class BaseTrackBuilder
     }
 
     /// <summary>
-    /// Factory Method to get the correct <code>BaseTrackBuilder</code>.
+    /// Factory Method to get the correct <code>TrackBuilder</code>.
     /// </summary>
-    /// <param name="type">The type of pieces we want to print with the created BaseTrackBuilder.</param>
+    /// <param name="type">The type of pieces we want to print with the created TrackBuilder.</param>
     /// <param name="trackPrinterPos"></param>
     /// <param name="draggablePos"></param>
-    /// <returns>A BaseTrackBuilder which prints track pieces for the given TrackType</returns>
-    public static BaseTrackBuilder CreateTrackBuilderForType(TrackType type, Vector3 trackPrinterPos, Vector3 draggablePos)
+    /// <returns>A TrackBuilder which prints track pieces for the given TrackType</returns>
+    public static TrackBuilder CreateTrackBuilderForType(TrackType type, Vector3 trackPrinterPos, Vector3 draggablePos)
     {
         return type switch {
-            TrackType.Straight => new BaseTrackBuilder(type, trackPrinterPos, draggablePos, 
+            TrackType.Straight => new TrackBuilder(type, trackPrinterPos, draggablePos, 
                 new LengthBasedNoECalcComponent(),
                 new StraightTrackSegmentCreatorComponent()),
             
-            TrackType.Left => new BaseTrackBuilder(type, trackPrinterPos, draggablePos,
+            TrackType.Left => new TrackBuilder(type, trackPrinterPos, draggablePos,
                 new AngleBasedNoECalcComponent(),
                 new CurvedTrackSegmentCreatorComponent()),
             
