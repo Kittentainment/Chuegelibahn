@@ -1,10 +1,12 @@
-namespace TrackPrinting;
 
-public enum TrackType
+namespace TrackPrinting
 {
-    Straight,
-    Left,
-    // Right,
-    // Up,
-    // Down
+    public enum TrackType
+    {
+        Straight,
+        Left,
+        // Right,
+        // Up,
+        // Down
+    }
 }

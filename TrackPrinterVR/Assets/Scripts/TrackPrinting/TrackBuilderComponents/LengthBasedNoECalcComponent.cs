@@ -1,18 +1,19 @@
 using UnityEngine;
 
-namespace TrackPrinting.TrackBuilderComponents;
-
-public class LengthBasedNoECalcComponent : NumberOfElementsCalcComponent
+namespace TrackPrinting.TrackBuilderComponents
 {
-    public override int CalculateNumberOfNeededElements(TrackType type, float distance, float horizontalAngle)
+    public class LengthBasedNoECalcComponent : NumberOfElementsCalcComponent
     {
-        var pieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
-        var numberOfNeededElements = Mathf.RoundToInt(distance / pieceLength);
+        public override int CalculateNumberOfNeededElements(TrackType type, float distance, float horizontalAngle)
+        {
+            var pieceLength = TrackPrefabManager.GetLengthOfTrackPiece(type);
+            var numberOfNeededElements = Mathf.RoundToInt(distance / pieceLength);
         
-        if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
-            numberOfNeededElements = TrackPrefabManager.GetMaximumNumberOfPieces(type);
+            if (numberOfNeededElements > TrackPrefabManager.GetMaximumNumberOfPieces(type))
+                numberOfNeededElements = TrackPrefabManager.GetMaximumNumberOfPieces(type);
 
-        return numberOfNeededElements;
-    }
+            return numberOfNeededElements;
+        }
     
+    }
 }

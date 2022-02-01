@@ -1,9 +1,10 @@
 using UnityEngine;
 
-namespace TrackPrinting;
-
-public class TrackPiece : MonoBehaviour
+namespace TrackPrinting
 {
-    [SerializeField] private TrackType _type;
-    public TrackType type => _type;
+    public class TrackPiece : MonoBehaviour
+    {
+        [SerializeField] private TrackType _type;
+        public TrackType type => _type;
+    }
 }
