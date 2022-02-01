@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ToggleGameObjectEnable : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class ToggleGameObjectEnable : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Keyboard.current.hKey.wasPressedThisFrame)
         {
             _enabled = !_enabled;
             _go.SetActive(_enabled);
