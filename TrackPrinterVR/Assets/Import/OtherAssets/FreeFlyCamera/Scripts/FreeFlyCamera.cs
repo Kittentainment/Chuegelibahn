@@ -31,7 +31,7 @@ public class FreeFlyCamera : MonoBehaviour
 
     [SerializeField]
     [Tooltip("Camera zooming in/out by 'Mouse Scroll Wheel' is active")]
-    private bool _enableTranslation = true;
+    private bool _enableTranslation = false;
 
     [SerializeField]
     [Tooltip("Velocity of camera zooming in/out")]
@@ -152,11 +152,11 @@ public class FreeFlyCamera : MonoBehaviour
         if (Cursor.visible)
             return;
 
-        // Translation
-        if (_enableTranslation)
-        {
-            transform.Translate(Vector3.forward * Mouse.current.delta.y.ReadValue() * Time.deltaTime * _translationSpeed);
-        }
+        // // Translation
+        // if (_enableTranslation)
+        // {
+        //     transform.Translate(Vector3.forward * Mouse.current.delta.y.ReadValue() * Time.deltaTime * _translationSpeed);
+        // }
 
         // Movement
         if (_enableMovement)
@@ -194,18 +194,20 @@ public class FreeFlyCamera : MonoBehaviour
         // Rotation
         if (_enableRotation)
         {
-            // Pitch
-            transform.rotation *= Quaternion.AngleAxis(
-                -Mouse.current.delta.y.ReadValue() * _mouseSense,
-                Vector3.right
-            );
-
-            // Paw
-            transform.rotation = Quaternion.Euler(
-                transform.eulerAngles.x,
-                transform.eulerAngles.y + Mouse.current.delta.x.ReadValue() * _mouseSense,
-                transform.eulerAngles.z
-            );
+            transform.RotateAround(transform.position, transform.right, -Mouse.current.delta.y.ReadValue() * _mouseSense);
+            transform.RotateAround(transform.position, transform.up, Mouse.current.delta.x.ReadValue() * _mouseSense);
+            // // Pitch
+            // transform.rotation *= Quaternion.AngleAxis(
+            //     -Mouse.current.delta.y.ReadValue() * _mouseSense,
+            //     Vector3.right
+            // );
+            //
+            // // Paw
+            // transform.rotation = Quaternion.Euler(
+            //     transform.eulerAngles.x,
+            //     transform.eulerAngles.y + Mouse.current.delta.x.ReadValue() * _mouseSense,
+            //     transform.eulerAngles.z
+            // );
         }
 
         // Return to init position
